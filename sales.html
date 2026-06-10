@@ -337,7 +337,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 window._renderPage = renderSales;
 
 function renderSales() {
-  var D = BNIDash;
+  var D = MIDash;
   var s = D.getSummary();
   var ws = D.getWilayahSeries();
 
@@ -413,7 +413,7 @@ function renderSales() {
   ]);
 }
 
-BNIDash.initFilter();
+MIDash.initFilter();
 renderSales();
 
 </script>

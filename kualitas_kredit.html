@@ -339,7 +339,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 window._renderPage = renderKK;
 
 function renderKK() {
-  var D = BNIDash;
+  var D = MIDash;
   var recs = D.getRecords().filter(function(r){return r.kategori==='Lending';});
   
   // Summary
@@ -400,7 +400,7 @@ function renderKK() {
   ]);
 
   // KK Table from kualitasKredit data
-  var kkRecs = BNI_DATA.getKKByWilayah(BNIDash.state.wilayah);
+  var kkRecs = MI_DATA.getKKByWilayah(MIDash.state.wilayah);
   var tbody = document.getElementById('kk-tbody');
   if (tbody) {
     tbody.innerHTML = kkRecs.map(function(r) {
@@ -421,7 +421,7 @@ function renderKK() {
   }
 }
 
-BNIDash.initFilter();
+MIDash.initFilter();
 renderKK();
 
 </script>

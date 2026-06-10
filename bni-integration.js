@@ -1,11 +1,11 @@
 // ══════════════════════════════════════════════════
 // MI DASHBOARD — DATA INTEGRATION ENGINE
-// Connects BNI_DATA dummy data to all pages.
+// Connects MI_DATA dummy data to all pages.
 // Reads ?get-wilayah=WXX from URL and refreshes metrics.
 // ══════════════════════════════════════════════════
 
 (function () {
-  if (typeof BNI_DATA === 'undefined') {
+  if (typeof MI_DATA === 'undefined') {
     console.error('[MI] data.js not loaded — check script src path');
     return;
   }
@@ -79,7 +79,7 @@
   // ── Page: executive ──────────────────────────────
   function initExecutive() {
     var wCode = getWilayah();
-    var recs  = BNI_DATA.filterByWilayah(wCode);
+    var recs  = MI_DATA.filterByWilayah(wCode);
 
     var dpk   = recs.filter(function(r){ return r.kategori === 'DPK'; });
     var dpkWil = dpk.filter(function(r){ return r.segmen === 'Consumer' || r.segmen === 'Mikro'; });
@@ -145,7 +145,7 @@
   // ── Page: kualitas_kredit ────────────────────────
   function initKualitasKredit() {
     var wCode = getWilayah();
-    var rows  = BNI_DATA.getKKByWilayah(wCode);
+    var rows  = MI_DATA.getKKByWilayah(wCode);
     var tbody = document.querySelector('.bni-kk-table tbody') || document.querySelector('table tbody');
     if (!tbody) return;
 
@@ -179,7 +179,7 @@
   // ── Page: sales / leads / business / developer ──
   function initGenericPage() {
     var wCode = getWilayah();
-    var recs  = BNI_DATA.filterByWilayah(wCode);
+    var recs  = MI_DATA.filterByWilayah(wCode);
     var lend  = recs.filter(function(r){ return r.kategori === 'Lending'; });
     var kk    = recs.filter(function(r){ return r.kategori === 'KK'; });
     var dpk   = recs.filter(function(r){ return r.kategori === 'DPK'; });
@@ -213,6 +213,6 @@
   }
 
   // Expose for manual call
-  window.BNI_INTEGRATION = { initExecutive, initKualitasKredit, initGenericPage };
+  window.MI_INTEGRATION = { initExecutive, initKualitasKredit, initGenericPage };
 
 })();

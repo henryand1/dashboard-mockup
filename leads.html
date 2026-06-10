@@ -374,7 +374,7 @@ var pageSize = 25;
 var allLeads = [];
 
 function renderLeads() {
-  var D = BNIDash;
+  var D = MIDash;
   var recs = D.getRecords();
 
   // Store for pagination
@@ -512,7 +512,7 @@ function renderLeads() {
 }
 
 function renderTable() {
-  var D = BNIDash;
+  var D = MIDash;
   var filtered = allLeads;
   
   var searchVal = document.getElementById('leads-search');
@@ -568,7 +568,7 @@ function leadsNext() {
   if(currentPage < Math.ceil(filtered.length/pageSize)){currentPage++;renderTable();} 
 }
 
-BNIDash.initFilter();
+MIDash.initFilter();
 renderLeads();
 
 </script>

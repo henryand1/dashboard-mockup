@@ -4,7 +4,7 @@
 //  Requires data.js to be loaded first
 // ══════════════════════════════════════════════
 
-window.BNIDash = (function() {
+window.MIDash = (function() {
   'use strict';
 
   // ── State ──────────────────────────────────
@@ -50,11 +50,11 @@ window.BNIDash = (function() {
 
   // ── Data access ────────────────────────────
   function getRecords() {
-    return state.wilayah ? BNI_DATA.filterByWilayah(state.wilayah) : BNI_DATA.records;
+    return state.wilayah ? MI_DATA.filterByWilayah(state.wilayah) : MI_DATA.records;
   }
 
   function getSummary() {
-    return BNI_DATA.getSummary(state.wilayah);
+    return MI_DATA.getSummary(state.wilayah);
   }
 
   function getByKategoriProduk(kategori, produkList) {
@@ -76,12 +76,12 @@ window.BNIDash = (function() {
   }
 
   function getWilayahSeries() {
-    var wList = BNI_DATA.masterWilayah;
+    var wList = MI_DATA.masterWilayah;
     if (state.wilayah) {
       wList = wList.filter(function(w){return w.kode === state.wilayah;});
     }
     return wList.map(function(w) {
-      var s = BNI_DATA.summaryWilayah.filter(function(x){return x.wilayah_kode === w.kode;})[0] || {};
+      var s = MI_DATA.summaryWilayah.filter(function(x){return x.wilayah_kode === w.kode;})[0] || {};
       return {
         nama: w.nama,
         dpk: s.dpk_outstanding || 0,
@@ -115,7 +115,7 @@ window.BNIDash = (function() {
     if (!sel) return;
     // Populate options
     var html = '<option value="">Semua Wilayah</option>';
-    BNI_DATA.masterWilayah.forEach(function(w) {
+    MI_DATA.masterWilayah.forEach(function(w) {
       var sel2 = (w.kode === activeWilayah) ? ' selected' : '';
       html += '<option value="' + w.kode + '"' + sel2 + '>' + w.kode + ' – ' + w.nama + '</option>';
     });
@@ -154,7 +154,7 @@ window.BNIDash = (function() {
     var el = document.getElementById('filter-info');
     if (!el) return;
     if (state.wilayah) {
-      var w = BNI_DATA.masterWilayah.filter(function(x){return x.kode===state.wilayah;})[0];
+      var w = MI_DATA.masterWilayah.filter(function(x){return x.kode===state.wilayah;})[0];
       el.textContent = 'Menampilkan: ' + (w ? w.kode + ' – ' + w.nama : state.wilayah);
       el.style.color = '#003C7D';
       el.style.fontWeight = '600';
@@ -311,5 +311,5 @@ window.BNIDash = (function() {
 })();
 
 // Expose to global for onclick handlers
-function applyFilter() { BNIDash.applyFilter(); }
-function resetFilter()  { BNIDash.resetFilter(); }
+function applyFilter() { MIDash.applyFilter(); }
+function resetFilter()  { MIDash.resetFilter(); }

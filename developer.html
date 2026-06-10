@@ -453,7 +453,7 @@ var WILAYAH_CODES = ['W04','W05','W06','W07','W09'];
 window._renderPage = renderDeveloper;
 
 function renderDeveloper() {
-  var D = BNIDash;
+  var D = MIDash;
 
   // ── Base KPR data ─────────────────────────────
   var recs = D.getRecords().filter(function(r){ return r.kategori === 'Lending'; });
@@ -674,7 +674,7 @@ function renderDeveloper() {
   }
 }
 
-BNIDash.initFilter();
+MIDash.initFilter();
 renderDeveloper();
 
 </script>

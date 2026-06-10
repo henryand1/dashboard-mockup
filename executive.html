@@ -388,7 +388,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 window._renderPage = renderExecutive;
 
 function renderExecutive() {
-  var D = BNIDash;
+  var D = MIDash;
   var s = D.getSummary();
 
   // KPI Cards
@@ -465,7 +465,7 @@ function renderExecutive() {
 }
 
 function renderWilayahCharts() {
-  var D = BNIDash;
+  var D = MIDash;
   var ws = D.getWilayahSeries();
   // Limit to top 10 by DPK for readability
   var top = ws.sort(function(a,b){return b.dpk-a.dpk;}).slice(0,10);
@@ -483,12 +483,12 @@ function renderWilayahCharts() {
 }
 
 // Init
-BNIDash.initFilter();
+MIDash.initFilter();
 renderExecutive();
 
 // Wilayah summary table
 (function() {
-  var D = BNIDash;
+  var D = MIDash;
   var ws = D.getWilayahSeries();
   var tbody = document.getElementById('wilayah-summary-body');
   if (!tbody) return;
