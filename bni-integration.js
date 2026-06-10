@@ -1,12 +1,12 @@
 // ══════════════════════════════════════════════════
-// BNI DASHBOARD — DATA INTEGRATION ENGINE
+// MI DASHBOARD — DATA INTEGRATION ENGINE
 // Connects BNI_DATA dummy data to all pages.
 // Reads ?get-wilayah=WXX from URL and refreshes metrics.
 // ══════════════════════════════════════════════════
 
 (function () {
   if (typeof BNI_DATA === 'undefined') {
-    console.error('[BNI] data.js not loaded — check script src path');
+    console.error('[MI] data.js not loaded — check script src path');
     return;
   }
 
@@ -207,9 +207,9 @@
     if (path.indexOf('executive') !== -1)            initExecutive();
     else if (path.indexOf('kualitas_kredit') !== -1) initKualitasKredit();
     else                                              initGenericPage();
-    console.log('[BNI] OK:', path.split('/').pop().split('?')[0]);
+    console.log('[MI] OK:', path.split('/').pop().split('?')[0]);
   } catch(e) {
-    console.error('[BNI] Error:', e.message, e.stack);
+    console.error('[MI] Error:', e.message, e.stack);
   }
 
   // Expose for manual call

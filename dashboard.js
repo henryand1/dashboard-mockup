@@ -1,6 +1,6 @@
 
 // ══════════════════════════════════════════════
-//  BNI Dashboard Shared JS
+//  MI Dashboard Shared JS
 //  Requires data.js to be loaded first
 // ══════════════════════════════════════════════
 
