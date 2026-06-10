@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Developer – KPR Booking – BNI Consumer Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --navy:#003C7D;
+  --navy-dark:#002859;
+  --orange:#F37021;
+  --bg:#EEF2F8;
+  --card:#FFFFFF;
+  --text:#1E293B;
+  --muted:#64748B;
+  --border:#E2E8F0;
+  --green:#059669;
+  --green-bg:#ECFDF5;
+  --yellow:#D97706;
+  --yellow-bg:#FFFBEB;
+  --red:#DC2626;
+  --red-bg:#FEF2F2;
+  --blue-light:#E8F0FC;
+  --sidebar-w:220px;
+  --navbar-h:60px;
+  --filter-h:52px;
+}
+
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-top:calc(var(--navbar-h) + var(--filter-h))}
+
+/* ─── NAVBAR ─── */
+.bni-navbar{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  height:var(--navbar-h);background:var(--navy);
+  display:flex;align-items:center;padding:0 24px;gap:16px;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
+}
+.bni-logo-text{
+  font-size:22px;font-weight:800;color:#fff;
+  letter-spacing:-.5px;line-height:1;
+}
+.bni-logo-text span{color:var(--orange)}
+.bni-brand-sep{width:1px;height:28px;background:rgba(255,255,255,.2)}
+.bni-brand-label{color:rgba(255,255,255,.75);font-size:13px;font-weight:500;white-space:nowrap}
+.bni-nav-links{display:flex;gap:2px;margin-left:auto}
+.bni-nav-link{
+  color:rgba(255,255,255,.7);text-decoration:none;
+  padding:6px 14px;border-radius:6px;font-size:13px;font-weight:500;
+  transition:all .15s;white-space:nowrap;
+}
+.bni-nav-link:hover{background:rgba(255,255,255,.12);color:#fff}
+.bni-nav-link.active{background:var(--orange);color:#fff}
+
+/* ─── FILTER BAR ─── */
+.bni-filter-bar{
+  position:fixed;top:var(--navbar-h);left:0;right:0;z-index:999;
+  height:var(--filter-h);background:#fff;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 24px;gap:12px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.filter-label{font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap}
+.filter-select{
+  height:32px;border:1px solid var(--border);border-radius:6px;
+  padding:0 28px 0 10px;font-size:13px;color:var(--text);background:#fff;
+  appearance:none;cursor:pointer;font-family:inherit;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%2364748B' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 8px center;
+  min-width:180px;
+}
+.filter-select:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 2px rgba(0,60,125,.15)}
+.filter-btn{
+  height:32px;padding:0 16px;border-radius:6px;font-size:13px;font-weight:600;
+  cursor:pointer;border:none;font-family:inherit;transition:all .15s;
+}
+.filter-btn-primary{background:var(--navy);color:#fff}
+.filter-btn-primary:hover{background:var(--navy-dark)}
+.filter-btn-reset{background:#f1f5f9;color:var(--muted);border:1px solid var(--border)}
+.filter-btn-reset:hover{background:#e2e8f0;color:var(--text)}
+.filter-info{margin-left:auto;font-size:12px;color:var(--muted);font-style:italic}
+
+/* ─── CONTENT ─── */
+.bni-content{padding:20px 24px 40px;max-width:1600px;margin:0 auto}
+
+/* ─── KPI CARDS ─── */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+
+.kpi-card{
+  background:var(--card);border-radius:12px;padding:18px 20px;
+  display:flex;align-items:flex-start;gap:14px;
+  box-shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  transition:box-shadow .15s;
+}
+.kpi-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.kpi-icon{
+  width:44px;height:44px;border-radius:10px;display:flex;
+  align-items:center;justify-content:center;flex-shrink:0;font-size:20px;
+}
+.kpi-icon.navy{background:var(--blue-light);color:var(--navy)}
+.kpi-icon.orange{background:#FFF0E8;color:var(--orange)}
+.kpi-icon.green{background:var(--green-bg);color:var(--green)}
+.kpi-icon.purple{background:#F3F0FF;color:#7C3AED}
+.kpi-body{flex:1;min-width:0}
+.kpi-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.kpi-value{font-size:22px;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:4px}
+.kpi-sub{font-size:12px;display:flex;align-items:center;gap:6px}
+.kpi-pct{font-weight:600}
+.kpi-pct.good{color:var(--green)}
+.kpi-pct.warn{color:var(--yellow)}
+.kpi-pct.bad{color:var(--red)}
+
+/* ─── SECTION GRID ─── */
+.section-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.section-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px}
+@media(max-width:1100px){.section-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.section-grid,.section-grid-2{grid-template-columns:1fr}}
+
+/* ─── CARD ─── */
+.bni-card{
+  background:var(--card);border-radius:12px;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.bni-card-header{
+  padding:14px 18px 12px;border-bottom:1px solid #f1f5f9;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.bni-card-title{font-size:13px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.4px}
+.bni-card-badge{
+  font-size:12px;font-weight:700;color:var(--navy);
+  background:var(--blue-light);padding:3px 10px;border-radius:20px;
+}
+.bni-card-body{padding:14px 18px;flex:1}
+.bni-card-footer{padding:10px 18px;border-top:1px solid #f1f5f9;background:#fafbfc}
+
+/* ─── PROGRESS ITEMS ─── */
+.prod-item{margin-bottom:12px}
+.prod-item:last-child{margin-bottom:0}
+.prod-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.prod-name{font-size:12px;font-weight:500;color:var(--text)}
+.prod-pct{font-size:12px;font-weight:700}
+.prod-pct.good{color:var(--green)}
+.prod-pct.warn{color:var(--yellow)}
+.prod-pct.bad{color:var(--red)}
+.prod-bar-track{height:6px;background:#F1F5F9;border-radius:3px;overflow:hidden}
+.prod-bar-fill{height:100%;border-radius:3px;transition:width .5s ease}
+.prod-bar-fill.good{background:var(--green)}
+.prod-bar-fill.warn{background:var(--yellow)}
+.prod-bar-fill.bad{background:var(--red)}
+.prod-amounts{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* ─── TABLE ─── */
+.bni-table{width:100%;border-collapse:collapse;font-size:13px}
+.bni-table th{
+  padding:10px 12px;background:#F8FAFC;border-bottom:2px solid var(--border);
+  font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.4px;white-space:nowrap;
+}
+.bni-table td{padding:10px 12px;border-bottom:1px solid #F1F5F9;vertical-align:middle}
+.bni-table tr:last-child td{border-bottom:none}
+.bni-table tr:hover td{background:#F8FAFC}
+.bni-table .num{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+
+/* ─── BADGES ─── */
+.badge-lancar{background:#ECFDF5;color:#059669;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.badge-dpk{background:#EFF6FF;color:#2563EB;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.badge-warn{background:var(--yellow-bg);color:var(--yellow);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.badge-bad{background:var(--red-bg);color:var(--red);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+
+/* ─── SECTION TITLE ─── */
+.section-title{
+  font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.6px;margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ─── CHART WRAPPER ─── */
+.chart-wrap{position:relative;height:200px}
+.chart-wrap-sm{position:relative;height:160px}
+
+/* ─── STAT ITEMS ─── */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-item{background:#F8FAFC;border-radius:8px;padding:12px 14px}
+.stat-item-label{font-size:11px;color:var(--muted);font-weight:500;margin-bottom:4px}
+.stat-item-value{font-size:16px;font-weight:700;color:var(--text)}
+.stat-item-sub{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* ─── SUMMARY WILAYAH TABLE ─── */
+.wilayah-summary-wrap{overflow-x:auto}
+
+/* ─── DONUT ─── */
+.donut-wrap{display:flex;align-items:center;gap:16px}
+.donut-canvas{width:120px!important;height:120px!important;flex-shrink:0}
+.donut-legend{flex:1}
+.donut-legend-item{display:flex;align-items:center;gap:6px;font-size:12px;margin-bottom:6px}
+.donut-legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* ─── LOADING ─── */
+.loading-overlay{
+  position:fixed;inset:0;z-index:9999;background:rgba(0,60,125,.85);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;
+  transition:opacity .3s;
+}
+.loading-overlay.hidden{opacity:0;pointer-events:none}
+.loading-spinner{
+  width:40px;height:40px;border:3px solid rgba(255,255,255,.3);
+  border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;
+}
+.loading-text{color:#fff;font-size:14px;font-weight:500}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ─── EMPTY STATE ─── */
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-state .icon{font-size:36px;margin-bottom:8px;opacity:.4}
+.empty-state p{font-size:13px}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .bni-nav-links{display:none}
+  .bni-content{padding:16px}
+}
+
+
+/* Developer-specific */
+.booking-summary-card{
+  background:var(--card);border-radius:12px;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  padding:20px 24px;display:flex;gap:24px;align-items:center;
+  margin-bottom:20px;
+}
+.donut-big-wrap{position:relative;width:140px;height:140px;flex-shrink:0}
+.donut-big-wrap canvas{width:140px!important;height:140px!important}
+.donut-center{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;pointer-events:none;
+}
+.donut-center-value{font-size:16px;font-weight:800;color:var(--text)}
+.donut-center-sub{font-size:10px;color:var(--muted);line-height:1.3}
+.booking-breakdown{flex:1;display:flex;flex-direction:column;gap:14px}
+.bk-row{display:flex;align-items:center;gap:10px}
+.bk-label{font-size:12px;font-weight:600;color:var(--text);min-width:80px}
+.bk-bar-wrap{flex:1;display:flex;flex-direction:column;gap:3px}
+.bk-bar-track{height:7px;background:#F1F5F9;border-radius:4px;overflow:hidden}
+.bk-bar-fill{height:100%;border-radius:4px}
+.bk-fill-kom{background:var(--orange)}
+.bk-fill-prog{background:#F59E0B}
+.bk-amounts{font-size:11px;color:var(--muted)}
+.bk-pct{font-size:12px;font-weight:700;min-width:55px;text-align:right}
+
+.dev-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.dev-cat-item{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 0;border-bottom:1px solid #F1F5F9}
+.dev-cat-item:last-child{border-bottom:none}
+.dev-cat-label{font-size:13px;color:var(--text);flex:1}
+.dev-cat-bar-wrap{width:120px;margin:0 12px}
+.dev-cat-amount{font-size:13px;font-weight:600;color:var(--text);min-width:80px;text-align:right}
+.dev-cat-pct{font-size:12px;font-weight:700;min-width:48px;text-align:right}
+
+.top3-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.top3-item{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 0;border-bottom:1px solid #F1F5F9}
+.top3-item:last-child{border-bottom:none}
+.top3-rank{font-size:16px;margin-right:10px}
+.top3-name{font-size:13px;font-weight:500;flex:1}
+.top3-amount{font-size:13px;font-weight:600;color:var(--text);margin-right:10px}
+.top3-pct{font-size:12px;font-weight:700}
+
+</style>
+</head>
+<nav class="bni-navbar">
+  <div class="bni-logo-text">BNI<span>.</span></div>
+  <div class="bni-brand-sep"></div>
+  <div class="bni-brand-label">Consumer Dashboard</div>
+  <div class="bni-nav-links"><a href="executive.html" class="bni-nav-link">Executive</a><a href="sales.html" class="bni-nav-link">Sales</a><a href="kualitas_kredit.html" class="bni-nav-link">Kualitas Kredit</a><a href="business.html" class="bni-nav-link">Business</a><a href="leads.html" class="bni-nav-link">Leads</a><a href="developer.html" class="bni-nav-link active">Developer</a></div>
+</nav>
+<div class="bni-filter-bar">
+  <span class="filter-label">Wilayah:</span>
+  <select id="wilayah-filter" class="filter-select"></select>
+  <button class="filter-btn filter-btn-primary" onclick="applyFilter()">Terapkan</button>
+  <button class="filter-btn filter-btn-reset" onclick="resetFilter()">Reset</button>
+  <span id="filter-info" class="filter-info"></span>
+</div>
+<main class="bni-content">
+
+  <!-- Booking Summary Card -->
+  <div class="section-title">KPR Booking Summary</div>
+  <div class="booking-summary-card">
+    <div class="donut-big-wrap">
+      <canvas id="chart-booking-donut"></canvas>
+      <div class="donut-center">
+        <div class="donut-center-value" id="donut-total">–</div>
+        <div class="donut-center-sub" id="donut-sub">–</div>
+      </div>
+    </div>
+    <div class="booking-breakdown">
+      <div class="bk-row">
+        <span class="bk-label">Komersial</span>
+        <div class="bk-bar-wrap">
+          <div class="bk-bar-track"><div id="bk-bar-kom" class="bk-bar-fill bk-fill-kom" style="width:0%"></div></div>
+          <div class="bk-amounts" id="bk-amt-kom">–</div>
+        </div>
+        <span class="bk-pct" id="bk-pct-kom">–</span>
+      </div>
+      <div class="bk-row">
+        <span class="bk-label">Program</span>
+        <div class="bk-bar-wrap">
+          <div class="bk-bar-track"><div id="bk-bar-prog" class="bk-bar-fill bk-fill-prog" style="width:0%"></div></div>
+          <div class="bk-amounts" id="bk-amt-prog">–</div>
+        </div>
+        <span class="bk-pct" id="bk-pct-prog">–</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Developer Category Cards -->
+  <div class="section-title">Kategori Developer</div>
+  <div class="dev-card-grid" style="margin-bottom:20px">
+    <!-- 21 Selected Developer -->
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">21 Selected Developer</span>
+        <span class="bni-card-badge" id="sel-total">–</span>
+      </div>
+      <div class="bni-card-body">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px">
+          Achievement: <span id="sel-pct" class="kpi-pct">–</span>
+        </div>
+        <div id="sel-rows"></div>
+      </div>
+    </div>
+
+    <!-- Top 10 Developer Wilayah -->
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">Top 10 Developer Wilayah</span>
+        <span class="bni-card-badge" id="wil-total">–</span>
+      </div>
+      <div class="bni-card-body">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px">
+          Achievement: <span id="wil-pct" class="kpi-pct">–</span>
+        </div>
+        <div id="wil-rows"></div>
+      </div>
+    </div>
+
+    <!-- Developer Lokal Wilayah -->
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">Developer Lokal Wilayah</span>
+        <span class="bni-card-badge" id="lok-total">–</span>
+      </div>
+      <div class="bni-card-body" id="lok-rows"></div>
+    </div>
+
+    <!-- Secondary -->
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">Secondary</span>
+        <span class="bni-card-badge" id="sec-total">–</span>
+      </div>
+      <div class="bni-card-body">
+        <div class="empty-state">
+          <div class="icon">🏠</div>
+          <p>Pembiayaan secondary market</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Other row: full width -->
+  <div class="bni-card" style="margin-bottom:20px">
+    <div class="bni-card-header">
+      <span class="bni-card-title">Other</span>
+      <span class="bni-card-badge" id="other-total">–</span>
+    </div>
+    <div class="bni-card-body" id="other-rows"></div>
+  </div>
+
+  <!-- Monthly Trend -->
+  <div class="section-title">Tren Booking Bulanan</div>
+  <div class="bni-card" style="margin-bottom:20px">
+    <div class="bni-card-header">
+      <span class="bni-card-title">Tren Booking (M) – Komersial vs Program</span>
+    </div>
+    <div class="bni-card-body">
+      <div class="chart-wrap" style="height:260px"><canvas id="chart-trend"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Top 3 Tables -->
+  <div class="section-title">Top Performers</div>
+  <div class="section-grid-2" style="margin-bottom:20px">
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">Top 3 Booking – 21 Selected Developer</span>
+      </div>
+      <div class="bni-card-body" id="top3-sel"></div>
+    </div>
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">Top 3 Booking – Developer Region</span>
+      </div>
+      <div class="bni-card-body" id="top3-wil"></div>
+    </div>
+  </div>
+
+  <!-- All Developer Table -->
+  <div class="section-title">Daftar 21 Selected Developer</div>
+  <div class="bni-card" style="margin-bottom:20px">
+    <div class="bni-card-header"><span class="bni-card-title">Detail per Developer</span></div>
+    <div class="bni-card-body" style="overflow-x:auto;padding:0">
+      <table class="bni-table">
+        <thead><tr>
+          <th>#</th><th>Developer</th>
+          <th class="num">Booking</th><th class="num">Target</th>
+          <th class="num">Achievement</th><th>Tipe</th>
+        </tr></thead>
+        <tbody id="all-dev-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<script src="data.js"></script>
+<script src="dashboard.js"></script>
+<script>
+
+window._renderPage = renderDeveloper;
+
+// Dummy developer names for Selected Developer
+var SELECTED_DEVS = [
+  'Ciputra Group','Perumnas','Sinarmas Land','Summarecon Agung',
+  'Agung Podomoro','Pakuwon Group','Lippo Karawaci','BSD City',
+  'Modernland Realty','Wika Realty','PP Properti','Adhi Persada',
+  'Intiland Dev','Nusa Raya Cipta','Metropolitan Land',
+  'Duta Anggada','Cowell Dev','Megapolitan Dev',
+  'Hutama Karya','Griya Idola'
+];
+
+var WILAYAH_CODES = ['W04','W05','W06','W07','W09'];
+
+window._renderPage = renderDeveloper;
+
+function renderDeveloper() {
+  var D = BNIDash;
+
+  // ── Base KPR data ─────────────────────────────
+  var recs = D.getRecords().filter(function(r){ return r.kategori === 'Lending'; });
+  
+  // Map produk to category
+  var komList = ['KPR BNI','KPR Griya','KPR Fleksi'];
+  var progList = ['Griya Ekspress'];
+  var muliList = ['Kredit Multiguna'];
+
+  var komRecs  = recs.filter(function(r){ return komList.indexOf(r.produk) >= 0; });
+  var progRecs = recs.filter(function(r){ return progList.indexOf(r.produk) >= 0; });
+  var muliRecs = recs.filter(function(r){ return muliList.indexOf(r.produk) >= 0; });
+  var otherRecs= recs.filter(function(r){ return komList.indexOf(r.produk)<0 && progList.indexOf(r.produk)<0; });
+
+  var sum = function(arr){ return arr.reduce(function(a,b){return a+b.outstanding_m;},0); };
+  var tgt = function(arr){ return arr.reduce(function(a,b){return a+b.target_m;},0); };
+
+  var komOut   = sum(komRecs),   komTgt   = tgt(komRecs);
+  var progOut  = sum(progRecs),  progTgt  = tgt(progRecs);
+  var totalOut = komOut + progOut;
+  var totalTgt = komTgt + progTgt;
+  var totalPct = totalTgt > 0 ? totalOut/totalTgt*100 : 0;
+  var gapFY    = totalOut - totalTgt;
+
+  // KPI helpers
+  function setTxt(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; }
+  function setHTML(id,v){ var e=document.getElementById(id); if(e) e.innerHTML=v; }
+
+  // ── Donut chart (Komersial vs Program) ────────
+  D.makeDonutChart('chart-booking-donut',
+    ['Komersial','Program'],
+    [komOut, progOut],
+    ['#F37021','#F59E0B']
+  );
+  setTxt('donut-total',  D.fmtM(totalOut));
+  setHTML('donut-sub',
+    'T.FY: '+D.fmtM(totalTgt)+'<br>Gap.FY: '+D.fmtM(gapFY)
+  );
+
+  // ── Breakdown bars ────────────────────────────
+  function setBookingBar(labelId, barId, pctId, amtId, out, tgt_v, colorCls) {
+    var pct = tgt_v > 0 ? out/tgt_v*100 : 0;
+    setTxt(labelId, '');
+    var bar = document.getElementById(barId);
+    if (bar) { bar.style.width = Math.min(pct,100)+'%'; bar.className = 'bk-bar-fill ' + colorCls; }
+    var pctEl = document.getElementById(pctId);
+    if (pctEl) {
+      pctEl.textContent = D.fmtPct(pct);
+      pctEl.className = 'bk-pct kpi-pct ' + D.pctClass(pct);
+    }
+    var amtEl = document.getElementById(amtId);
+    if (amtEl) amtEl.textContent = D.fmtM(out)+' | T.FY: '+D.fmtM(tgt_v)+' | Gap: '+D.fmtM(out-tgt_v);
+  }
+  setBookingBar('','bk-bar-kom','bk-pct-kom','bk-amt-kom', komOut,  komTgt,  'bk-fill-kom');
+  setBookingBar('','bk-bar-prog','bk-pct-prog','bk-amt-prog',progOut, progTgt, 'bk-fill-prog');
+
+  // ── Selected Developer cards ──────────────────
+  // Distribute totalOut among 3 groups
+  var selTotal   = totalOut * 0.22;  // ~22% = 21 selected dev
+  var wilTotal   = totalOut * 0.37;  // ~37% = top 10 wilayah
+  var lokalTotal = totalOut * 0.35;  // ~35% = developer lokal
+  var secondTotal= totalOut * 0.06;  // ~6%  = secondary
+
+  var selKom  = selTotal * 0.98;
+  var selProg = selTotal * 0.02;
+  var selTgt  = selKom / 0.36;
+  var selPct  = selKom / selTgt * 100;
+
+  var wilKom  = wilTotal * 0.86;
+  var wilProg = wilTotal * 0.14;
+  var wilTgt  = wilTotal / 0.90;
+  var wilPct  = wilTotal / wilTgt * 100;
+
+  var lokKom  = lokalTotal * 0.55;
+  var lokProg = lokalTotal * 0.45;
+
+  function fillDevCard(prefix, total, kom, prog, tgt_v, pct) {
+    setTxt(prefix+'-total', D.fmtM(total));
+    setTxt(prefix+'-pct',   D.fmtPct(pct));
+    var pctEl = document.getElementById(prefix+'-pct');
+    if (pctEl) pctEl.className = 'kpi-pct ' + D.pctClass(pct);
+
+    var mkRow = function(label, out, t) {
+      var p = t > 0 ? out/t*100 : 0;
+      var w = Math.min(p, 100);
+      var cls = D.pctClass(p);
+      return '<div class="dev-cat-item">'
+        +'<span class="dev-cat-label">'+label+'</span>'
+        +'<div class="dev-cat-bar-wrap"><div class="prod-bar-track"><div class="prod-bar-fill '+cls+'" style="width:'+w+'%"></div></div></div>'
+        +'<span class="dev-cat-amount">'+D.fmtM(out)+' ('+D.fmtPct(p)+')</span>'
+        +'</div>';
+    };
+    var el = document.getElementById(prefix+'-rows');
+    if (el) el.innerHTML = mkRow('Komersial',kom,kom/0.9) + mkRow('Program',prog,prog/0.85);
+  }
+
+  fillDevCard('sel',   selTotal, selKom, selProg, selTgt, selPct);
+  fillDevCard('wil',   wilTotal, wilKom, wilProg, wilTgt, wilPct);
+
+  // Developer lokal (no target shown)
+  setTxt('lok-total', D.fmtM(lokalTotal));
+  var lokEl = document.getElementById('lok-rows');
+  if (lokEl) {
+    var mkRow2 = function(label, out, pct) {
+      var cls = D.pctClass(pct);
+      var w = Math.min(pct, 100);
+      return '<div class="dev-cat-item">'
+        +'<span class="dev-cat-label">'+label+'</span>'
+        +'<div class="dev-cat-bar-wrap"><div class="prod-bar-track"><div class="prod-bar-fill '+cls+'" style="width:'+w+'%"></div></div></div>'
+        +'<span class="dev-cat-amount">'+D.fmtM(out)+' ('+D.fmtPct(pct)+')</span>'
+        +'</div>';
+    };
+    lokEl.innerHTML = mkRow2('Komersial', lokKom, 55) + mkRow2('Program', lokProg, 45);
+  }
+
+  // Secondary
+  setTxt('sec-total', D.fmtM(secondTotal));
+
+  // Other (Top Up, Take Over, Multiguna, Lainnya)
+  var muliOut   = sum(muliRecs);
+  var topUp     = muliOut * 0.37;
+  var takeOver  = muliOut * 0.24;
+  var multiguna = muliOut * 0.32;
+  var lainnya   = muliOut * 0.07;
+  setTxt('other-total', D.fmtM(muliOut));
+
+  var otherEl = document.getElementById('other-rows');
+  if (otherEl) {
+    var items = [
+      ['Top Up', topUp, 37], ['Take Over', takeOver, 24],
+      ['Multiguna', multiguna, 32], ['Lainnya', lainnya, 7]
+    ];
+    otherEl.innerHTML = items.map(function(item) {
+      var cls = D.pctClass(item[2]);
+      return '<div class="dev-cat-item">'
+        +'<span class="dev-cat-label">'+item[0]+'</span>'
+        +'<div class="dev-cat-bar-wrap"><div class="prod-bar-track"><div class="prod-bar-fill '+cls+'" style="width:'+item[2]+'%"></div></div></div>'
+        +'<span class="dev-cat-amount">'+D.fmtM(item[1])+'</span>'
+        +'<span class="dev-cat-pct kpi-pct '+cls+'">'+D.fmtPct(item[2])+'%</span>'
+        +'</div>';
+    }).join('');
+  }
+
+  // ── Monthly trend chart ───────────────────────
+  var monthly = {};
+  komRecs.forEach(function(r){
+    if (!monthly[r.bulan]) monthly[r.bulan] = {kom:0,prog:0};
+    monthly[r.bulan].kom += r.outstanding_m;
+  });
+  progRecs.forEach(function(r){
+    if (!monthly[r.bulan]) monthly[r.bulan] = {kom:0,prog:0};
+    monthly[r.bulan].prog += r.outstanding_m;
+  });
+  var months = Object.keys(monthly).sort();
+  var monthLabels = months.map(function(m){
+    var parts = m.split('-');
+    var names = ['','Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'];
+    return names[parseInt(parts[1])] || parts[1];
+  });
+  D.makeBarChart('chart-trend', monthLabels, [
+    { label:'Komersial', data:months.map(function(m){return monthly[m]?monthly[m].kom:0;}),
+      backgroundColor:'#F37021', borderRadius:4 },
+    { label:'Program', data:months.map(function(m){return monthly[m]?monthly[m].prog:0;}),
+      backgroundColor:'#0EA5E9', borderRadius:4 }
+  ]);
+
+  // ── Top 3 Selected Developer ──────────────────
+  // Distribute selKom among SELECTED_DEVS proportionally
+  var devShares = [14,12,10,9,8,7,6,6,6,5,4,3,3,2,2,1,1,1,0.5,0.5];
+  var devTotals = devShares.map(function(s){ return selTotal * s/100; });
+  // Target = 1/(pct from screenshot avg ~310%)
+  var devPcts = [372, 320, 229, 180, 155, 140, 128, 115, 108, 100,
+                 95, 88, 82, 76, 71, 65, 60, 55, 50, 45];
+
+  var top3El = document.getElementById('top3-sel');
+  if (top3El) {
+    top3El.innerHTML = SELECTED_DEVS.slice(0,3).map(function(name,i){
+      var cls = D.pctClass(devPcts[i]);
+      return '<div class="top3-item">'
+        +'<span class="top3-rank">'+(i===0?'🥇':i===1?'🥈':'🥉')+'</span>'
+        +'<span class="top3-name">'+name+'</span>'
+        +'<span class="top3-amount">'+D.fmtM(devTotals[i])+'</span>'
+        +'<span class="top3-pct kpi-pct '+cls+'">'+D.fmtPct(devPcts[i])+'</span>'
+        +'</div>';
+    }).join('');
+  }
+
+  // ── Top 3 Developer Region ────────────────────
+  var wSeries = D.getWilayahSeries();
+  var top3Wil = wSeries.slice().sort(function(a,b){return b.lending-a.lending;}).slice(0,3);
+  var top3WilEl = document.getElementById('top3-wil');
+  if (top3WilEl) {
+    top3WilEl.innerHTML = top3Wil.map(function(w,i){
+      var cls = D.pctClass(w.lending_pct);
+      return '<div class="top3-item">'
+        +'<span class="top3-rank">'+(i===0?'🥇':i===1?'🥈':'🥉')+'</span>'
+        +'<span class="top3-name">'+w.nama+'</span>'
+        +'<span class="top3-amount">'+D.fmtM(w.lending)+'</span>'
+        +'<span class="top3-pct kpi-pct '+cls+'">'+D.fmtPct(w.lending_pct)+'</span>'
+        +'</div>';
+    }).join('');
+  }
+
+  // ── All developer table ───────────────────────
+  var allDevEl = document.getElementById('all-dev-tbody');
+  if (allDevEl) {
+    allDevEl.innerHTML = SELECTED_DEVS.map(function(name,i){
+      var out = devTotals[i] || 0;
+      var tgtV = devPcts[i] > 0 ? out / (devPcts[i]/100) : 0;
+      var cls = D.pctClass(devPcts[i]);
+      return '<tr><td>'+(i+1)+'</td><td><b>'+name+'</b></td>'
+        +'<td class="num">'+D.fmtM(out)+'</td>'
+        +'<td class="num">'+D.fmtM(tgtV)+'</td>'
+        +'<td class="num"><span class="kpi-pct '+cls+'">'+D.fmtPct(devPcts[i])+'</span></td>'
+        +'<td><span class="badge-lancar">Komersial</span></td>'
+        +'</tr>';
+    }).join('');
+  }
+}
+
+BNIDash.initFilter();
+renderDeveloper();
+
+</script>
+</body>
+</html>

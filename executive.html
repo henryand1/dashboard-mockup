@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Executive – BNI Consumer Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --navy:#003C7D;
+  --navy-dark:#002859;
+  --orange:#F37021;
+  --bg:#EEF2F8;
+  --card:#FFFFFF;
+  --text:#1E293B;
+  --muted:#64748B;
+  --border:#E2E8F0;
+  --green:#059669;
+  --green-bg:#ECFDF5;
+  --yellow:#D97706;
+  --yellow-bg:#FFFBEB;
+  --red:#DC2626;
+  --red-bg:#FEF2F2;
+  --blue-light:#E8F0FC;
+  --sidebar-w:220px;
+  --navbar-h:60px;
+  --filter-h:52px;
+}
+
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-top:calc(var(--navbar-h) + var(--filter-h))}
+
+/* ─── NAVBAR ─── */
+.bni-navbar{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  height:var(--navbar-h);background:var(--navy);
+  display:flex;align-items:center;padding:0 24px;gap:16px;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
+}
+.bni-logo-text{
+  font-size:22px;font-weight:800;color:#fff;
+  letter-spacing:-.5px;line-height:1;
+}
+.bni-logo-text span{color:var(--orange)}
+.bni-brand-sep{width:1px;height:28px;background:rgba(255,255,255,.2)}
+.bni-brand-label{color:rgba(255,255,255,.75);font-size:13px;font-weight:500;white-space:nowrap}
+.bni-nav-links{display:flex;gap:2px;margin-left:auto}
+.bni-nav-link{
+  color:rgba(255,255,255,.7);text-decoration:none;
+  padding:6px 14px;border-radius:6px;font-size:13px;font-weight:500;
+  transition:all .15s;white-space:nowrap;
+}
+.bni-nav-link:hover{background:rgba(255,255,255,.12);color:#fff}
+.bni-nav-link.active{background:var(--orange);color:#fff}
+
+/* ─── FILTER BAR ─── */
+.bni-filter-bar{
+  position:fixed;top:var(--navbar-h);left:0;right:0;z-index:999;
+  height:var(--filter-h);background:#fff;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 24px;gap:12px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.filter-label{font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap}
+.filter-select{
+  height:32px;border:1px solid var(--border);border-radius:6px;
+  padding:0 28px 0 10px;font-size:13px;color:var(--text);background:#fff;
+  appearance:none;cursor:pointer;font-family:inherit;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%2364748B' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 8px center;
+  min-width:180px;
+}
+.filter-select:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 2px rgba(0,60,125,.15)}
+.filter-btn{
+  height:32px;padding:0 16px;border-radius:6px;font-size:13px;font-weight:600;
+  cursor:pointer;border:none;font-family:inherit;transition:all .15s;
+}
+.filter-btn-primary{background:var(--navy);color:#fff}
+.filter-btn-primary:hover{background:var(--navy-dark)}
+.filter-btn-reset{background:#f1f5f9;color:var(--muted);border:1px solid var(--border)}
+.filter-btn-reset:hover{background:#e2e8f0;color:var(--text)}
+.filter-info{margin-left:auto;font-size:12px;color:var(--muted);font-style:italic}
+
+/* ─── CONTENT ─── */
+.bni-content{padding:20px 24px 40px;max-width:1600px;margin:0 auto}
+
+/* ─── KPI CARDS ─── */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+
+.kpi-card{
+  background:var(--card);border-radius:12px;padding:18px 20px;
+  display:flex;align-items:flex-start;gap:14px;
+  box-shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  transition:box-shadow .15s;
+}
+.kpi-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.kpi-icon{
+  width:44px;height:44px;border-radius:10px;display:flex;
+  align-items:center;justify-content:center;flex-shrink:0;font-size:20px;
+}
+.kpi-icon.navy{background:var(--blue-light);color:var(--navy)}
+.kpi-icon.orange{background:#FFF0E8;color:var(--orange)}
+.kpi-icon.green{background:var(--green-bg);color:var(--green)}
+.kpi-icon.purple{background:#F3F0FF;color:#7C3AED}
+.kpi-body{flex:1;min-width:0}
+.kpi-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.kpi-value{font-size:22px;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:4px}
+.kpi-sub{font-size:12px;display:flex;align-items:center;gap:6px}
+.kpi-pct{font-weight:600}
+.kpi-pct.good{color:var(--green)}
+.kpi-pct.warn{color:var(--yellow)}
+.kpi-pct.bad{color:var(--red)}
+
+/* ─── SECTION GRID ─── */
+.section-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.section-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px}
+@media(max-width:1100px){.section-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.section-grid,.section-grid-2{grid-template-columns:1fr}}
+
+/* ─── CARD ─── */
+.bni-card{
+  background:var(--card);border-radius:12px;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.bni-card-header{
+  padding:14px 18px 12px;border-bottom:1px solid #f1f5f9;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.bni-card-title{font-size:13px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.4px}
+.bni-card-badge{
+  font-size:12px;font-weight:700;color:var(--navy);
+  background:var(--blue-light);padding:3px 10px;border-radius:20px;
+}
+.bni-card-body{padding:14px 18px;flex:1}
+.bni-card-footer{padding:10px 18px;border-top:1px solid #f1f5f9;background:#fafbfc}
+
+/* ─── PROGRESS ITEMS ─── */
+.prod-item{margin-bottom:12px}
+.prod-item:last-child{margin-bottom:0}
+.prod-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.prod-name{font-size:12px;font-weight:500;color:var(--text)}
+.prod-pct{font-size:12px;font-weight:700}
+.prod-pct.good{color:var(--green)}
+.prod-pct.warn{color:var(--yellow)}
+.prod-pct.bad{color:var(--red)}
+.prod-bar-track{height:6px;background:#F1F5F9;border-radius:3px;overflow:hidden}
+.prod-bar-fill{height:100%;border-radius:3px;transition:width .5s ease}
+.prod-bar-fill.good{background:var(--green)}
+.prod-bar-fill.warn{background:var(--yellow)}
+.prod-bar-fill.bad{background:var(--red)}
+.prod-amounts{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* ─── TABLE ─── */
+.bni-table{width:100%;border-collapse:collapse;font-size:13px}
+.bni-table th{
+  padding:10px 12px;background:#F8FAFC;border-bottom:2px solid var(--border);
+  font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.4px;white-space:nowrap;
+}
+.bni-table td{padding:10px 12px;border-bottom:1px solid #F1F5F9;vertical-align:middle}
+.bni-table tr:last-child td{border-bottom:none}
+.bni-table tr:hover td{background:#F8FAFC}
+.bni-table .num{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+
+/* ─── BADGES ─── */
+.badge-lancar{background:#ECFDF5;color:#059669;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.badge-dpk{background:#EFF6FF;color:#2563EB;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.badge-warn{background:var(--yellow-bg);color:var(--yellow);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.badge-bad{background:var(--red-bg);color:var(--red);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+
+/* ─── SECTION TITLE ─── */
+.section-title{
+  font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.6px;margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ─── CHART WRAPPER ─── */
+.chart-wrap{position:relative;height:200px}
+.chart-wrap-sm{position:relative;height:160px}
+
+/* ─── STAT ITEMS ─── */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-item{background:#F8FAFC;border-radius:8px;padding:12px 14px}
+.stat-item-label{font-size:11px;color:var(--muted);font-weight:500;margin-bottom:4px}
+.stat-item-value{font-size:16px;font-weight:700;color:var(--text)}
+.stat-item-sub{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* ─── SUMMARY WILAYAH TABLE ─── */
+.wilayah-summary-wrap{overflow-x:auto}
+
+/* ─── DONUT ─── */
+.donut-wrap{display:flex;align-items:center;gap:16px}
+.donut-canvas{width:120px!important;height:120px!important;flex-shrink:0}
+.donut-legend{flex:1}
+.donut-legend-item{display:flex;align-items:center;gap:6px;font-size:12px;margin-bottom:6px}
+.donut-legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* ─── LOADING ─── */
+.loading-overlay{
+  position:fixed;inset:0;z-index:9999;background:rgba(0,60,125,.85);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;
+  transition:opacity .3s;
+}
+.loading-overlay.hidden{opacity:0;pointer-events:none}
+.loading-spinner{
+  width:40px;height:40px;border:3px solid rgba(255,255,255,.3);
+  border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;
+}
+.loading-text{color:#fff;font-size:14px;font-weight:500}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ─── EMPTY STATE ─── */
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-state .icon{font-size:36px;margin-bottom:8px;opacity:.4}
+.empty-state p{font-size:13px}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .bni-nav-links{display:none}
+  .bni-content{padding:16px}
+}
+
+
+</style>
+</head>
+<nav class="bni-navbar">
+  <div class="bni-logo-text">BNI<span>.</span></div>
+  <div class="bni-brand-sep"></div>
+  <div class="bni-brand-label">Consumer Dashboard</div>
+  <div class="bni-nav-links"><a href="executive.html" class="bni-nav-link active">Executive</a><a href="sales.html" class="bni-nav-link">Sales</a><a href="kualitas_kredit.html" class="bni-nav-link">Kualitas Kredit</a><a href="business.html" class="bni-nav-link">Business</a><a href="leads.html" class="bni-nav-link">Leads</a><a href="developer.html" class="bni-nav-link">Developer</a></div>
+</nav>
+<div class="bni-filter-bar">
+  <span class="filter-label">Wilayah:</span>
+  <select id="wilayah-filter" class="filter-select" onchange=""></select>
+  <button class="filter-btn filter-btn-primary" onclick="applyFilter()">Terapkan</button>
+  <button class="filter-btn filter-btn-reset" onclick="resetFilter()">Reset</button>
+  <span id="filter-info" class="filter-info"></span>
+</div>
+<main class="bni-content">
+
+  <!-- KPI Row -->
+  <div class="kpi-row" style="margin-bottom:20px">
+    <div class="kpi-card" id="kpi-dpk">
+      <div class="kpi-icon navy">🏦</div>
+      <div class="kpi-body">
+        <div class="kpi-label">Total DPK</div>
+        <div class="kpi-value">–</div>
+        <div class="kpi-sub">–</div>
+      </div>
+    </div>
+    <div class="kpi-card" id="kpi-lending">
+      <div class="kpi-icon green">💼</div>
+      <div class="kpi-body">
+        <div class="kpi-label">Total Lending</div>
+        <div class="kpi-value">–</div>
+        <div class="kpi-sub">–</div>
+      </div>
+    </div>
+    <div class="kpi-card" id="kpi-kk">
+      <div class="kpi-icon orange">💳</div>
+      <div class="kpi-body">
+        <div class="kpi-label">Kartu Kredit</div>
+        <div class="kpi-value">–</div>
+        <div class="kpi-sub">–</div>
+      </div>
+    </div>
+    <div class="kpi-card" id="kpi-mer">
+      <div class="kpi-icon purple">📱</div>
+      <div class="kpi-body">
+        <div class="kpi-label">Merchant</div>
+        <div class="kpi-value">–</div>
+        <div class="kpi-sub">–</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DPK + KK Section title -->
+  <div class="section-title">DPK &amp; Kartu Kredit</div>
+  <div class="section-grid" style="margin-bottom:20px">
+    <!-- DPK Wilayah -->
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">DPK Wilayah</span>
+        <span class="bni-card-badge" id="dpk-wil-badge">–</span>
+      </div>
+      <div class="bni-card-body" id="dpk-wil-items"></div>
+    </div>
+    <!-- KK Channel -->
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">Kartu Kredit – Channel</span>
+        <span class="bni-card-badge" id="kk-cr-badge">–</span>
+      </div>
+      <div class="bni-card-body" id="dpk-cr-items"></div>
+    </div>
+    <!-- DPK Chart -->
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">DPK per Wilayah</span>
+      </div>
+      <div class="bni-card-body">
+        <div class="chart-wrap"><canvas id="chart-dpk"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lending + Merchant -->
+  <div class="section-title">Lending &amp; Merchant</div>
+  <div class="section-grid" style="margin-bottom:20px">
+    <!-- Baki Debet -->
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">Baki Debet (Lending)</span>
+        <span class="bni-card-badge" id="bd-badge">–</span>
+      </div>
+      <div class="bni-card-body" id="bd-items"></div>
+    </div>
+    <!-- Merchant -->
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">Merchant – Channel</span>
+        <span class="bni-card-badge" id="mer-badge">–</span>
+      </div>
+      <div class="bni-card-body" id="mer-items"></div>
+    </div>
+    <!-- Lending Chart -->
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">Lending per Wilayah</span>
+      </div>
+      <div class="bni-card-body">
+        <div class="chart-wrap"><canvas id="chart-lending"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kolektibilitas -->
+  <div class="section-title">Kualitas Kredit – Kolektibilitas</div>
+  <div class="section-grid-2" style="margin-bottom:20px">
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">Distribusi Kolektibilitas</span>
+      </div>
+      <div class="bni-card-body">
+        <div class="donut-wrap">
+          <div style="height:140px;width:140px;flex-shrink:0">
+            <canvas id="chart-kol"></canvas>
+          </div>
+          <div id="kol-legend" style="flex:1"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">Ringkasan Wilayah</span>
+      </div>
+      <div class="bni-card-body" style="overflow-x:auto">
+        <table class="bni-table" id="wilayah-summary-table">
+          <thead><tr>
+            <th>Wilayah</th>
+            <th class="num">DPK</th>
+            <th class="num">Lending</th>
+            <th class="num">Achievement</th>
+            <th class="num">Nasabah</th>
+          </tr></thead>
+          <tbody id="wilayah-summary-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="data.js"></script>
+<script src="dashboard.js"></script>
+<script>
+
+window._renderPage = renderExecutive;
+
+function renderExecutive() {
+  var D = BNIDash;
+  var s = D.getSummary();
+
+  // KPI Cards
+  var dpkPct = s.dpk_target > 0 ? s.dpk_outstanding/s.dpk_target*100 : 0;
+  var lendPct = s.lending_target > 0 ? s.lending_outstanding/s.lending_target*100 : 0;
+  var kkPct = s.kk_target > 0 ? s.kk_outstanding/s.kk_target*100 : 0;
+  var merPct = s.merchant_target > 0 ? s.merchant_outstanding/s.merchant_target*100 : 0;
+
+  function setKPI(id, val, pct, sub) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.querySelector('.kpi-value').textContent = val;
+    var c = D.pctClass(pct);
+    el.querySelector('.kpi-sub').innerHTML = '<span class="kpi-pct '+c+'">'+D.fmtPct(pct)+'</span> dari target · '+sub;
+  }
+
+  setKPI('kpi-dpk',     D.fmtM(s.dpk_outstanding),     dpkPct,  D.fmtM(s.dpk_target));
+  setKPI('kpi-lending', D.fmtM(s.lending_outstanding),  lendPct, D.fmtM(s.lending_target));
+  setKPI('kpi-kk',      D.fmtM(s.kk_outstanding),       kkPct,   D.fmtM(s.kk_target));
+  setKPI('kpi-mer',     D.fmtM(s.merchant_outstanding), merPct,  D.fmtM(s.merchant_target));
+
+  // ── DPK products ─────────────────────────────
+  var dpkProds = ['Tabungan','Giro','Deposito'].map(function(p) {
+    var d = D.getByProduk(p); d.name = p; return d;
+  });
+  D.renderProdItems('dpk-wil-items', dpkProds);
+
+  var dpkTotal = dpkProds.reduce(function(a,b){return a+b.outstanding;},0);
+  document.getElementById('dpk-wil-badge').textContent = D.fmtM(dpkTotal);
+
+  // ── KK channel ───────────────────────────────
+  var kkChans = ['Direct Sales','Staff','Digital Partnership','E-commerce','Referral'].map(function(p) {
+    var d = D.getByProduk(p); d.name = p; return d;
+  });
+  D.renderProdItems('dpk-cr-items', kkChans);
+  var kkTotal = D.getByKategoriProduk('KK');
+  document.getElementById('kk-cr-badge').textContent = D.fmtM(kkTotal.outstanding);
+
+  // ── Lending ──────────────────────────────────
+  var lendProds = ['KPR BNI','KPR Griya','KPR Fleksi','Griya Ekspress','Kredit Multiguna'].map(function(p) {
+    var d = D.getByProduk(p); d.name = p; return d;
+  });
+  D.renderProdItems('bd-items', lendProds);
+  var bdTotal = D.getByKategoriProduk('Lending');
+  document.getElementById('bd-badge').textContent = D.fmtM(bdTotal.outstanding);
+
+  // ── Merchant ─────────────────────────────────
+  var merProds = ['EDC','QRIS','Mobile Banking','Internet Banking','Virtual Account'].map(function(p) {
+    var d = D.getByProduk(p); d.name = p; return d;
+  });
+  D.renderProdItems('mer-items', merProds);
+  document.getElementById('mer-badge').textContent = D.fmtM(s.merchant_outstanding);
+
+  // ── Kolektibilitas ───────────────────────────
+  var kol = D.getKolektibilitasBreakdown();
+  var kolLabels = ['Lancar (1)','DPK (2)','Kurang Lancar (3)','Diragukan (4)','Macet (5)'];
+  var kolColors = ['#059669','#2563EB','#D97706','#EA580C','#DC2626'];
+  var kolData = [1,2,3,4,5].map(function(k){return kol.breakdown[k]||0;});
+  D.makeDonutChart('chart-kol', kolLabels, kolData, kolColors);
+  var kolLeg = document.getElementById('kol-legend');
+  if (kolLeg) {
+    var total = kolData.reduce(function(a,b){return a+b;},0);
+    kolLeg.innerHTML = kolLabels.map(function(l,i) {
+      var pct = total > 0 ? (kolData[i]/total*100).toFixed(1) : '0.0';
+      return '<div class="donut-legend-item"><div class="donut-legend-dot" style="background:'+kolColors[i]+'"></div>'
+        +'<span style="flex:1">'+l+'</span>'
+        +'<b>'+pct+'%</b>'
+        +'</div>';
+    }).join('');
+  }
+
+  // ── Charts ────────────────────────────────────
+  renderWilayahCharts();
+}
+
+function renderWilayahCharts() {
+  var D = BNIDash;
+  var ws = D.getWilayahSeries();
+  // Limit to top 10 by DPK for readability
+  var top = ws.sort(function(a,b){return b.dpk-a.dpk;}).slice(0,10);
+  var labels = top.map(function(w){return w.nama;});
+
+  D.makeBarChart('chart-dpk', labels, [
+    { label: 'Outstanding', data: top.map(function(w){return w.dpk;}), backgroundColor: 'rgba(0,60,125,.7)', borderRadius: 4 },
+    { label: 'Target', data: top.map(function(w){return w.dpk_target;}), backgroundColor: 'rgba(243,112,33,.35)', borderRadius: 4 }
+  ]);
+
+  D.makeBarChart('chart-lending', labels, [
+    { label: 'Outstanding', data: top.map(function(w){return w.lending;}), backgroundColor: 'rgba(5,150,105,.7)', borderRadius: 4 },
+    { label: 'Target', data: top.map(function(w){return w.lending_target;}), backgroundColor: 'rgba(5,150,105,.2)', borderRadius: 4 }
+  ]);
+}
+
+// Init
+BNIDash.initFilter();
+renderExecutive();
+
+// Wilayah summary table
+(function() {
+  var D = BNIDash;
+  var ws = D.getWilayahSeries();
+  var tbody = document.getElementById('wilayah-summary-body');
+  if (!tbody) return;
+  tbody.innerHTML = ws.map(function(w) {
+    var pct = w.dpk_target > 0 ? w.dpk/w.dpk_target*100 : 0;
+    var cls = D.pctClass(pct);
+    return '<tr><td><b>'+w.nama+'</b></td>'
+      +'<td class="num">'+D.fmtM(w.dpk)+'</td>'
+      +'<td class="num">'+D.fmtM(w.lending)+'</td>'
+      +'<td class="num"><span class="kpi-pct '+cls+'">'+D.fmtPct(pct)+'</span></td>'
+      +'<td class="num">'+w.nasabah+'</td></tr>';
+  }).join('');
+})();
+
+</script>
+</body>
+</html>
