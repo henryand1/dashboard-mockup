@@ -568,8 +568,10 @@ function leadsNext() {
   if(currentPage < Math.ceil(filtered.length/pageSize)){currentPage++;renderTable();} 
 }
 
-MIDash.initFilter();
-renderLeads();
+window.addEventListener('load', function() {
+  MIDash.initFilter();
+  renderLeads();
+});
 
 </script>
 </body>

@@ -674,8 +674,10 @@ function renderDeveloper() {
   }
 }
 
-MIDash.initFilter();
-renderDeveloper();
+window.addEventListener('load', function() {
+  MIDash.initFilter();
+  renderDeveloper();
+});
 
 </script>
 </body>

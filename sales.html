@@ -413,8 +413,10 @@ function renderSales() {
   ]);
 }
 
-MIDash.initFilter();
-renderSales();
+window.addEventListener('load', function() {
+  MIDash.initFilter();
+  renderSales();
+});
 
 </script>
 </body>

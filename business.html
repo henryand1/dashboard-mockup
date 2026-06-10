@@ -445,8 +445,10 @@ function renderBusiness() {
   }
 }
 
-MIDash.initFilter();
-renderBusiness();
+window.addEventListener('load', function() {
+  MIDash.initFilter();
+  renderBusiness();
+});
 
 </script>
 </body>

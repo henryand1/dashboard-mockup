@@ -483,8 +483,10 @@ function renderWilayahCharts() {
 }
 
 // Init
-MIDash.initFilter();
-renderExecutive();
+window.addEventListener('load', function() {
+  MIDash.initFilter();
+  renderExecutive();
+});
 
 // Wilayah summary table
 (function() {

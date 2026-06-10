@@ -421,8 +421,10 @@ function renderKK() {
   }
 }
 
-MIDash.initFilter();
-renderKK();
+window.addEventListener('load', function() {
+  MIDash.initFilter();
+  renderKK();
+});
 
 </script>
 </body>
