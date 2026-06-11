@@ -99,7 +99,7 @@ window.MIDash = (function() {
   }
 
   function getKolektibilitasBreakdown() {
-    var recs = getRecords().filter(function(r){return r.kategori === 'Lending';});
+    var recs = getRecords().filter(function(r){return r.kategori === 'Klaim';});
     var breakdown = {1:0,2:0,3:0,4:0,5:0};
     recs.forEach(function(r){
       var k = r.kolektibilitas || 1;
@@ -114,7 +114,7 @@ window.MIDash = (function() {
     var sel = document.getElementById('wilayah-filter');
     if (!sel) return;
     // Populate options
-    var html = '<option value="">Semua Wilayah</option>';
+    var html = '<option value="">Semua Kanal</option>';
     MI_DATA.masterWilayah.forEach(function(w) {
       var sel2 = (w.kode === activeWilayah) ? ' selected' : '';
       html += '<option value="' + w.kode + '"' + sel2 + '>' + w.kode + ' – ' + w.nama + '</option>';
@@ -159,7 +159,7 @@ window.MIDash = (function() {
       el.style.color = '#003C7D';
       el.style.fontWeight = '600';
     } else {
-      el.textContent = 'Menampilkan semua wilayah';
+      el.textContent = 'Menampilkan semua kanal';
       el.style.color = '';
       el.style.fontWeight = '';
     }

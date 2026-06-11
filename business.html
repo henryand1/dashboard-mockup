@@ -237,12 +237,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   <div class="bni-logo-text">MI<span>.</span></div>
   <div class="bni-brand-sep"></div>
   <div class="bni-brand-label">Consumer Dashboard</div>
-  <div class="bni-nav-links"><a href="executive.html" class="bni-nav-link">Executive</a><a href="sales.html" class="bni-nav-link">Sales</a><a href="kualitas_kredit.html" class="bni-nav-link">Kualitas Kredit</a><a href="business.html" class="bni-nav-link active">Business</a><a href="leads.html" class="bni-nav-link">Leads</a><a href="developer.html" class="bni-nav-link">Developer</a></div>
+  <div class="bni-nav-links"><a href="sales.html" class="bni-nav-link">Sales</a><a href="business.html" class="bni-nav-link active">Business</a><a href="leads.html" class="bni-nav-link">Leads</a></div>
 </nav>
 <div class="bni-filter-bar">
-  <span class="filter-label">Wilayah:</span>
+  <span class="filter-label">Kanal:</span>
   <select id="wilayah-filter" class="filter-select" onchange=""></select>
-  <button class="filter-btn filter-btn-primary" onclick="applyFilter()">Terapkan</button>
+  <button class="filter-btn filter-btn-primary" onclick="applyFilter()">Apply</button>
   <button class="filter-btn filter-btn-reset" onclick="resetFilter()">Reset</button>
   <span id="filter-info" class="filter-info"></span>
 </div>
@@ -253,23 +253,23 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="kpi-card">
       <div class="kpi-icon navy">📋</div>
       <div class="kpi-body">
-        <div class="kpi-label">Total Rekening</div>
+        <div class="kpi-label">Total Polis</div>
         <div class="kpi-value" id="biz-total-rec">–</div>
-        <div class="kpi-sub">Jumlah data transaksi</div>
+        <div class="kpi-sub">Jumlah data polis</div>
       </div>
     </div>
     <div class="kpi-card">
       <div class="kpi-icon green">👤</div>
       <div class="kpi-body">
-        <div class="kpi-label">Unique Nasabah</div>
+        <div class="kpi-label">Unique Tertanggung</div>
         <div class="kpi-value" id="biz-nasabah">–</div>
-        <div class="kpi-sub">Nasabah unik aktif</div>
+        <div class="kpi-sub">Tertanggung unik aktif</div>
       </div>
     </div>
     <div class="kpi-card">
       <div class="kpi-icon orange">💵</div>
       <div class="kpi-body">
-        <div class="kpi-label">Total Outstanding</div>
+        <div class="kpi-label">Total Nilai Pertanggungan</div>
         <div class="kpi-value" id="biz-outstanding">–</div>
         <div class="kpi-sub">Semua kategori</div>
       </div>
@@ -292,15 +292,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="bni-card-body" id="seg-prods"></div>
     </div>
     <div class="bni-card">
-      <div class="bni-card-header"><span class="bni-card-title">Segmen – Outstanding vs Target</span></div>
+      <div class="bni-card-header"><span class="bni-card-title">Segmen – Nilai Pertanggungan vs Target</span></div>
       <div class="bni-card-body">
         <div class="chart-wrap"><canvas id="chart-seg-compare"></canvas></div>
       </div>
     </div>
     <div class="bni-card">
-      <div class="bni-card-header"><span class="bni-card-title">Outstanding per Kategori</span></div>
+      <div class="bni-card-header"><span class="bni-card-title">Nilai Pertanggungan per Kategori</span></div>
       <div class="bni-card-body">
-        <div class="chart-wrap"><canvas id="chart-kat"></canvas></div>
+        <div class="donut-wrap" style="padding:10px 0"><div style="position:relative;width:150px;height:150px;flex-shrink:0"><canvas id="chart-kat"></canvas></div><div class="donut-legend" id="legend-kat"></div></div>
       </div>
     </div>
   </div>
@@ -308,25 +308,34 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   <!-- Monthly -->
   <div class="section-title">Tren Bulanan</div>
   <div class="bni-card" style="margin-bottom:20px">
-    <div class="bni-card-header"><span class="bni-card-title">Total Outstanding per Bulan</span></div>
+    <div class="bni-card-header"><span class="bni-card-title">Total Nilai Pertanggungan per Bulan</span></div>
     <div class="bni-card-body">
       <div class="chart-wrap" style="height:220px"><canvas id="chart-monthly"></canvas></div>
     </div>
   </div>
 
   <!-- Cabang Table -->
-  <div class="section-title">Top Cabang by Outstanding</div>
+  <div class="section-title">Top Kanit by Nilai Pertanggungan</div>
   <div class="bni-card" style="margin-bottom:20px">
-    <div class="bni-card-header"><span class="bni-card-title">Top 20 Cabang</span></div>
+    <div class="bni-card-header"><span class="bni-card-title">Top 20 Kanit</span></div>
     <div class="bni-card-body" style="overflow-x:auto;padding:0">
       <table class="bni-table">
         <thead><tr>
-          <th>Cabang</th><th>Wilayah</th>
-          <th class="num">Outstanding</th><th class="num">Target</th>
-          <th class="num">Achievement</th><th class="num">Rekening</th>
+          <th>Kanit</th><th>Kanal</th>
+          <th class="num">Nilai Pertanggungan</th><th class="num">Target</th>
+          <th class="num">Achievement</th><th class="num">Polis</th>
         </tr></thead>
         <tbody id="biz-tbody"></tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- Polis Baru vs Lapse -->
+  <div class="section-title">Dinamika Polis per Bulan</div>
+  <div class="bni-card" style="margin-bottom:20px">
+    <div class="bni-card-header"><span class="bni-card-title">Polis Aktif Baru vs Lapse per Bulan</span></div>
+    <div class="bni-card-body">
+      <div class="chart-wrap" style="height:220px"><canvas id="chart-polis-trend"></canvas></div>
     </div>
   </div>
 
@@ -353,7 +362,7 @@ function renderBusiness() {
   });
 
   var segList = Object.keys(segs).sort();
-  var segColors = {'Bisnis':'rgba(0,60,125,.7)','Consumer':'rgba(243,112,33,.7)','Korporasi':'rgba(5,150,105,.7)','Mikro':'rgba(124,58,237,.7)'};
+  var segColors = {'Grup':'rgba(0,60,125,.7)','Individu':'rgba(243,112,33,.7)','Korporasi':'rgba(5,150,105,.7)','Ritel':'rgba(124,58,237,.7)'};
 
   // KPI cards
   function setVal(id,v) { var el=document.getElementById(id); if(el) el.textContent=v; }
@@ -388,7 +397,7 @@ function renderBusiness() {
 
   // Segment chart
   D.makeBarChart('chart-seg-compare', segList, [
-    { label:'Outstanding', data:segList.map(function(s){return segs[s].outstanding;}),
+    { label:'Nilai Pertanggungan', data:segList.map(function(s){return segs[s].outstanding;}),
       backgroundColor:segList.map(function(s){return segColors[s]||'rgba(100,116,139,.7)';}), borderRadius:4 },
     { label:'Target', data:segList.map(function(s){return segs[s].target;}),
       backgroundColor:segList.map(function(s){
@@ -403,10 +412,15 @@ function renderBusiness() {
     kats[r.kategori] += r.outstanding_m;
   });
   var katNames = Object.keys(kats);
-  D.makeBarChart('chart-kat', katNames, [
-    { label:'Outstanding', data:katNames.map(function(k){return kats[k];}),
-      backgroundColor:['rgba(0,60,125,.7)','rgba(5,150,105,.7)','rgba(243,112,33,.7)','rgba(124,58,237,.7)'], borderRadius:4 }
-  ]);
+  var katColors = ['rgba(0,60,125,.85)','rgba(5,150,105,.85)','rgba(243,112,33,.85)','rgba(124,58,237,.85)'];
+  D.makeDonutChart('chart-kat', katNames, katNames.map(function(k){return kats[k];}), katColors);
+  var legKat = document.getElementById('legend-kat');
+  if (legKat) {
+    legKat.innerHTML = katNames.map(function(k,i){
+      return '<div class="donut-legend-item"><span class="donut-legend-dot" style="background:'+katColors[i]+'"></span>'
+        +'<span>'+k+'</span><span style="margin-left:auto;font-weight:600">'+D.fmtM(kats[k])+'</span></div>';
+    }).join('');
+  }
 
   // Monthly trend
   var monthly = {};
@@ -416,9 +430,9 @@ function renderBusiness() {
   });
   var months = Object.keys(monthly).sort();
   D.makeBarChart('chart-monthly', months, [
-    { label:'Total Outstanding', data:months.map(function(m){return monthly[m];}),
-      backgroundColor:'rgba(0,60,125,.5)', borderColor:'rgba(0,60,125,1)', borderWidth:2,
-      fill:true, type:'bar', borderRadius:4 }
+    { label:'Total Nilai Pertanggungan', data:months.map(function(m){return monthly[m];}),
+      backgroundColor:'rgba(0,60,125,.12)', borderColor:'rgba(0,60,125,1)', borderWidth:2.5,
+      fill:true, type:'line', tension:0.4, pointRadius:3, pointBackgroundColor:'rgba(0,60,125,1)' }
   ]);
 
   // Cabang table
@@ -443,6 +457,29 @@ function renderBusiness() {
         +'<td class="num">'+c.count+'</td></tr>';
     }).join('');
   }
+
+  // ── Polis Baru vs Lapse per Bulan ────────────────────────────
+  var polisByMonth = {};
+  recs.forEach(function(r) {
+    if (!polisByMonth[r.bulan]) polisByMonth[r.bulan] = {baru:0, lapse:0};
+    if (r.status_kredit === 'Aktif') polisByMonth[r.bulan].baru++;
+    if (r.status_kredit === 'Lapse') polisByMonth[r.bulan].lapse++;
+  });
+  var polisMonths = Object.keys(polisByMonth).sort();
+  D.makeBarChart('chart-polis-trend', polisMonths, [
+    { label:'Polis Aktif Baru', data:polisMonths.map(function(m){return polisByMonth[m].baru;}),
+      backgroundColor:'rgba(5,150,105,.7)', borderRadius:4 },
+    { label:'Lapse', data:polisMonths.map(function(m){return polisByMonth[m].lapse;}),
+      backgroundColor:'rgba(220,38,38,.7)', borderRadius:4 }
+  ], {
+    options: {
+      scales: {
+        x: { ticks:{font:{size:10,family:'Inter'},maxRotation:45}, grid:{display:false} },
+        y: { ticks:{font:{size:10,family:'Inter'}, callback:function(v){return v;}}, grid:{color:'#F1F5F9'} }
+      },
+      plugins: { tooltip:{ callbacks:{ label:function(ctx){ return ' '+ctx.dataset.label+': '+ctx.raw+' polis'; } } } }
+    }
+  });
 }
 
 window.addEventListener('load', function() {
@@ -452,4 +489,4 @@ window.addEventListener('load', function() {
 
 </script>
 </body>
-</html>
+</html>   
