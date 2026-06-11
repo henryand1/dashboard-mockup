@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Business – MI Consumer Dashboard</title>
+<title>Dashboard Kanal – MI Consumer Dashboard</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23003C7D'/><text x='16' y='22' text-anchor='middle' font-size='13' font-family='Arial,sans-serif' fill='white' font-weight='bold'>MI</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -103,7 +104,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .kpi-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
 .kpi-icon{
   width:44px;height:44px;border-radius:10px;display:flex;
-  align-items:center;justify-content:center;flex-shrink:0;font-size:20px;
+  align-items:center;justify-content:center;flex-shrink:0;
 }
 .kpi-icon.navy{background:var(--blue-light);color:var(--navy)}
 .kpi-icon.orange{background:#FFF0E8;color:var(--orange)}
@@ -237,10 +238,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   <div class="bni-logo-text">MI<span>.</span></div>
   <div class="bni-brand-sep"></div>
   <div class="bni-brand-label">Consumer Dashboard</div>
-  <div class="bni-nav-links"><a href="sales.html" class="bni-nav-link">Sales</a><a href="business.html" class="bni-nav-link active">Business</a><a href="leads.html" class="bni-nav-link">Leads</a></div>
+  <div class="bni-nav-links"><a href="sales.html" class="bni-nav-link">Sales</a><a href="business.html" class="bni-nav-link active">Dashboard Kanal</a><a href="leads.html" class="bni-nav-link">Leads &amp; Pipeline</a></div>
 </nav>
 <div class="bni-filter-bar">
-  <span class="filter-label">Kanal:</span>
+  <span class="filter-label">Kanit:</span>
   <select id="wilayah-filter" class="filter-select" onchange=""></select>
   <button class="filter-btn filter-btn-primary" onclick="applyFilter()">Apply</button>
   <button class="filter-btn filter-btn-reset" onclick="resetFilter()">Reset</button>
@@ -248,95 +249,101 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 </div>
 <main class="bni-content">
 
-  <!-- KPI Row -->
+  <!-- Sales KPI Row -->
   <div class="kpi-row" style="margin-bottom:20px">
-    <div class="kpi-card">
-      <div class="kpi-icon navy">📋</div>
+    <div class="kpi-card" id="kpi-consumer">
+      <div class="kpi-icon navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
       <div class="kpi-body">
-        <div class="kpi-label">Total Polis</div>
-        <div class="kpi-value" id="biz-total-rec">–</div>
-        <div class="kpi-sub">Jumlah data polis</div>
+        <div class="kpi-label">Total Premi</div>
+        <div class="kpi-value">–</div>
+        <div class="kpi-sub">–</div>
       </div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-icon green">👤</div>
+    <div class="kpi-card" id="kpi-retail">
+      <div class="kpi-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
       <div class="kpi-body">
-        <div class="kpi-label">Unique Tertanggung</div>
-        <div class="kpi-value" id="biz-nasabah">–</div>
-        <div class="kpi-sub">Tertanggung unik aktif</div>
+        <div class="kpi-label">Total Leads</div>
+        <div class="kpi-value">–</div>
+        <div class="kpi-sub">–</div>
       </div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-icon orange">💵</div>
+    <div class="kpi-card" id="kpi-followup">
+      <div class="kpi-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
       <div class="kpi-body">
-        <div class="kpi-label">Total Nilai Pertanggungan</div>
-        <div class="kpi-value" id="biz-outstanding">–</div>
-        <div class="kpi-sub">Semua kategori</div>
+        <div class="kpi-label">Total Pipeline</div>
+        <div class="kpi-value">–</div>
+        <div class="kpi-sub">–</div>
       </div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-icon purple">🎯</div>
+    <div class="kpi-card" id="kpi-closing">
+      <div class="kpi-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
       <div class="kpi-body">
-        <div class="kpi-label">Overall Achievement</div>
-        <div class="kpi-value kpi-pct" id="biz-ach">–</div>
-        <div class="kpi-sub">vs Target</div>
+        <div class="kpi-label">Closing Rate</div>
+        <div class="kpi-value">–</div>
+        <div class="kpi-sub">–</div>
       </div>
     </div>
   </div>
 
-  <!-- Segment breakdown -->
-  <div class="section-title">Breakdown per Segmen</div>
+  <!-- Funnel chart -->
+  <div class="section-title">Sales Funnel &amp; Pipeline</div>
   <div class="section-grid" style="margin-bottom:20px">
     <div class="bni-card">
-      <div class="bni-card-header"><span class="bni-card-title">Progress per Segmen</span></div>
-      <div class="bni-card-body" id="seg-prods"></div>
-    </div>
-    <div class="bni-card">
-      <div class="bni-card-header"><span class="bni-card-title">Segmen – Nilai Pertanggungan vs Target</span></div>
+      <div class="bni-card-header"><span class="bni-card-title">Pipeline per Category</span></div>
       <div class="bni-card-body">
-        <div class="chart-wrap"><canvas id="chart-seg-compare"></canvas></div>
+        <div class="chart-wrap"><canvas id="chart-funnel"></canvas></div>
       </div>
     </div>
     <div class="bni-card">
-      <div class="bni-card-header"><span class="bni-card-title">Nilai Pertanggungan per Kategori</span></div>
+      <div class="bni-card-header"><span class="bni-card-title">Achievement Rate per Produk</span></div>
       <div class="bni-card-body">
-        <div class="donut-wrap" style="padding:10px 0"><div style="position:relative;width:150px;height:150px;flex-shrink:0"><canvas id="chart-kat"></canvas></div><div class="donut-legend" id="legend-kat"></div></div>
+        <div class="chart-wrap"><canvas id="chart-ach-produk"></canvas></div>
+      </div>
+    </div>
+    <div class="bni-card">
+      <div class="bni-card-header"><span class="bni-card-title">Closing Rate per Agen</span></div>
+      <div class="bni-card-body">
+        <div class="chart-wrap"><canvas id="chart-closing-wil"></canvas></div>
       </div>
     </div>
   </div>
 
-  <!-- Monthly -->
-  <div class="section-title">Tren Bulanan</div>
-  <div class="bni-card" style="margin-bottom:20px">
-    <div class="bni-card-header"><span class="bni-card-title">Total Nilai Pertanggungan per Bulan</span></div>
-    <div class="bni-card-body">
-      <div class="chart-wrap" style="height:220px"><canvas id="chart-monthly"></canvas></div>
+  <!-- KPI Row -->
+  <div class="section-title">Distribusi Pipeline</div>
+  <div class="section-grid-2" style="margin-bottom:20px">
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">Total Data Pipeline per Kanit</span>
+        <span class="bni-card-badge" id="leads-total">–</span>
+      </div>
+      <div class="bni-card-body">
+        <div class="chart-wrap" style="height:200px"><canvas id="chart-wil-dist"></canvas></div>
+      </div>
+    </div>
+    <div class="bni-card">
+      <div class="bni-card-header">
+        <span class="bni-card-title">Distribusi Status Polis</span>
+      </div>
+      <div class="bni-card-body"><div class="donut-wrap"><div style="position:relative;width:150px;height:150px;flex-shrink:0"><canvas id="chart-status-donut"></canvas></div><div class="donut-legend" id="leads-status"></div></div></div>
     </div>
   </div>
 
-  <!-- Cabang Table -->
-  <div class="section-title">Top Kanit by Nilai Pertanggungan</div>
+  <!-- Table -->
+  <div class="section-title">Top 10 New Polis</div>
   <div class="bni-card" style="margin-bottom:20px">
-    <div class="bni-card-header"><span class="bni-card-title">Top 20 Kanit</span></div>
+    <div class="bni-card-header">
+      <span class="bni-card-title">Top 10 New Polis</span>
+    </div>
     <div class="bni-card-body" style="overflow-x:auto;padding:0">
       <table class="bni-table">
         <thead><tr>
-          <th>Kanit</th><th>Kanal</th>
-          <th class="num">Nilai Pertanggungan</th><th class="num">Target</th>
-          <th class="num">Achievement</th><th class="num">Polis</th>
+          <th>No. Polis</th><th>Kanit</th><th>Kategori</th><th>Produk</th>
+          <th class="num">Nilai Pertanggungan</th><th>Status</th><th>Agen</th>
         </tr></thead>
-        <tbody id="biz-tbody"></tbody>
+        <tbody id="leads-tbody"></tbody>
       </table>
     </div>
-  </div>
 
-  <!-- Polis Baru vs Lapse -->
-  <div class="section-title">Dinamika Polis per Bulan</div>
-  <div class="bni-card" style="margin-bottom:20px">
-    <div class="bni-card-header"><span class="bni-card-title">Polis Aktif Baru vs Lapse per Bulan</span></div>
-    <div class="bni-card-body">
-      <div class="chart-wrap" style="height:220px"><canvas id="chart-polis-trend"></canvas></div>
-    </div>
   </div>
 
 </main>
@@ -345,146 +352,233 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 <script src="dashboard.js"></script>
 <script>
 
-window._renderPage = renderBusiness;
+window._renderPage = renderDashKanal;
+var allLeads = [];
 
-function renderBusiness() {
+function renderDashKanal() {
   var D = MIDash;
-  var recs = D.getRecords();
+  var recs = getKanitRecs();
 
-  // Segment breakdown
-  var segs = {};
-  recs.forEach(function(r) {
-    if (!segs[r.segmen]) segs[r.segmen] = {outstanding:0,target:0,count:0,nasabah:new Set()};
-    segs[r.segmen].outstanding += r.outstanding_m;
-    segs[r.segmen].target += r.target_m;
-    segs[r.segmen].count++;
-    segs[r.segmen].nasabah.add(r.nasabah);
-  });
+  // Store for pagination
+  allLeads = recs.slice();
 
-  var segList = Object.keys(segs).sort();
-  var segColors = {'Grup':'rgba(0,60,125,.7)','Individu':'rgba(243,112,33,.7)','Korporasi':'rgba(5,150,105,.7)','Ritel':'rgba(124,58,237,.7)'};
-
-  // KPI cards
   function setVal(id,v) { var el=document.getElementById(id); if(el) el.textContent=v; }
-  var totalRecs = recs.length;
-  var totalOut = recs.reduce(function(a,b){return a+b.outstanding_m;},0);
-  var totalTarget = recs.reduce(function(a,b){return a+b.target_m;},0);
-  var overallPct = totalTarget > 0 ? totalOut/totalTarget*100 : 0;
-  var nasabahUniq = new Set(recs.map(function(r){return r.nasabah;})).size;
-
-  setVal('biz-total-rec', D.fmtNum(totalRecs));
-  setVal('biz-nasabah', D.fmtNum(nasabahUniq));
-  setVal('biz-outstanding', D.fmtM(totalOut));
-  setVal('biz-ach', D.fmtPct(overallPct));
-  var achEl = document.getElementById('biz-ach');
-  if (achEl) achEl.className = 'kpi-value kpi-pct ' + D.pctClass(overallPct);
-
-  // Segment progress
-  var segProds = document.getElementById('seg-prods');
-  if (segProds) {
-    segProds.innerHTML = segList.map(function(sg) {
-      var d = segs[sg];
-      var pct = d.target > 0 ? d.outstanding/d.target*100 : 0;
-      var cls = D.pctClass(pct);
-      var w = Math.min(pct, 100);
-      return '<div class="prod-item">'
-        +'<div class="prod-row"><span class="prod-name">'+sg+'</span><span class="prod-pct '+cls+'">'+D.fmtPct(pct)+'</span></div>'
-        +'<div class="prod-bar-track"><div class="prod-bar-fill '+cls+'" style="width:'+w+'%"></div></div>'
-        +'<div class="prod-amounts">'+D.fmtM(d.outstanding)+' / Target: '+D.fmtM(d.target)+' · '+d.nasabah.size+' nasabah</div>'
-      +'</div>';
-    }).join('');
+  function setHTML(id,v) { var el=document.getElementById(id); if(el) el.innerHTML=v; }
+  function setKPI(cardId, value, sub, pct) {
+    var card = document.getElementById(cardId);
+    if (!card) return;
+    card.querySelector('.kpi-value').textContent = value;
+    var cls = pct !== undefined ? D.pctClass(pct) : '';
+    card.querySelector('.kpi-sub').innerHTML = pct !== undefined
+      ? '<span class="kpi-pct '+cls+'">'+D.fmtPct(pct)+'</span> ' + sub
+      : sub;
   }
 
-  // Segment chart
-  D.makeBarChart('chart-seg-compare', segList, [
-    { label:'Nilai Pertanggungan', data:segList.map(function(s){return segs[s].outstanding;}),
-      backgroundColor:segList.map(function(s){return segColors[s]||'rgba(100,116,139,.7)';}), borderRadius:4 },
-    { label:'Target', data:segList.map(function(s){return segs[s].target;}),
-      backgroundColor:segList.map(function(s){
-        var c = segColors[s]||'rgba(100,116,139,'; return (c.replace('0.7','0.2'));
-      }), borderRadius:4 }
+  // ── Total Premi ───────────────────────────────
+  var totalOut = recs.reduce(function(a,b){ return a+b.outstanding_m; }, 0);
+  var totalTgt = recs.reduce(function(a,b){ return a+b.target_m; }, 0);
+  var totalPct = totalTgt > 0 ? totalOut/totalTgt*100 : 0;
+  setKPI('kpi-consumer', D.fmtM(totalOut), 'dari target '+D.fmtM(totalTgt), totalPct);
+
+  // ── Total Leads ────────────────────────────────
+  setKPI('kpi-retail', D.fmtNum(recs.length), recs.length+' leads masuk');
+
+  // ── Total Pipeline ────────────────────────────
+  var pipeline = recs.filter(function(r){ return r.status_kredit !== 'Closing'; }).length;
+  setKPI('kpi-followup', D.fmtNum(pipeline), pipeline+' leads dalam proses');
+
+  // ── Closing Rate ──────────────────────────────
+  var closed = recs.filter(function(r){ return r.status_kredit === 'Closing'; }).length;
+  var closeRate = recs.length > 0 ? closed/recs.length*100 : 0;
+  setKPI('kpi-closing', D.fmtPct(closeRate), closed+' polis berhasil closing');
+
+  // ── Pipeline per Category (Renewal vs New Business) ─────────
+  var categories = ['New Business','Renewal'];
+  var catColors  = ['rgba(0,60,125,.7)','rgba(243,112,33,.7)'];
+  var catOut = categories.map(function(c){ return recs.filter(function(r){return r.segmen===c;}).reduce(function(a,b){return a+b.outstanding_m;},0); });
+  var catTgt = categories.map(function(c){ return recs.filter(function(r){return r.segmen===c;}).reduce(function(a,b){return a+b.target_m;},0); });
+  D.makeBarChart('chart-funnel', categories, [
+    { label:'Nilai Pertanggungan', data:catOut, backgroundColor:catColors, borderRadius:4 },
+    { label:'Target', data:catTgt,
+      type:'line', borderColor:'rgba(220,38,38,.8)', borderWidth:2.5,
+      pointRadius:8, pointBackgroundColor:'rgba(220,38,38,1)', fill:false,
+      backgroundColor:'transparent', tension:0.3 }
   ]);
 
-  // Kategori chart
-  var kats = {};
-  recs.forEach(function(r) {
-    if (!kats[r.kategori]) kats[r.kategori] = 0;
-    kats[r.kategori] += r.outstanding_m;
+  // ── Achievement rate per produk (top 8) ───────
+  var prodMap = {};
+  recs.forEach(function(r){
+    if (!prodMap[r.produk]) prodMap[r.produk] = {out:0,tgt:0};
+    prodMap[r.produk].out += r.outstanding_m;
+    prodMap[r.produk].tgt += r.target_m;
   });
-  var katNames = Object.keys(kats);
-  var katColors = ['rgba(0,60,125,.85)','rgba(5,150,105,.85)','rgba(243,112,33,.85)','rgba(124,58,237,.85)'];
-  D.makeDonutChart('chart-kat', katNames, katNames.map(function(k){return kats[k];}), katColors);
-  var legKat = document.getElementById('legend-kat');
-  if (legKat) {
-    legKat.innerHTML = katNames.map(function(k,i){
-      return '<div class="donut-legend-item"><span class="donut-legend-dot" style="background:'+katColors[i]+'"></span>'
-        +'<span>'+k+'</span><span style="margin-left:auto;font-weight:600">'+D.fmtM(kats[k])+'</span></div>';
-    }).join('');
-  }
+  var prodList = Object.keys(prodMap).map(function(p){
+    var pct = prodMap[p].tgt > 0 ? prodMap[p].out/prodMap[p].tgt*100 : 0;
+    return { name:p, pct:pct };
+  }).sort(function(a,b){return b.pct-a.pct;}).slice(0,8);
 
-  // Monthly trend
-  var monthly = {};
-  recs.forEach(function(r) {
-    if (!monthly[r.bulan]) monthly[r.bulan] = 0;
-    monthly[r.bulan] += r.outstanding_m;
-  });
-  var months = Object.keys(monthly).sort();
-  D.makeBarChart('chart-monthly', months, [
-    { label:'Total Nilai Pertanggungan', data:months.map(function(m){return monthly[m];}),
-      backgroundColor:'rgba(0,60,125,.12)', borderColor:'rgba(0,60,125,1)', borderWidth:2.5,
-      fill:true, type:'line', tension:0.4, pointRadius:3, pointBackgroundColor:'rgba(0,60,125,1)' }
-  ]);
-
-  // Cabang table
-  var cabangMap = {};
-  recs.forEach(function(r) {
-    var key = r.cabang;
-    if (!cabangMap[key]) cabangMap[key] = {cabang:r.cabang,wilayah:r.wilayah_nama,outstanding:0,target:0,count:0};
-    cabangMap[key].outstanding += r.outstanding_m;
-    cabangMap[key].target += r.target_m;
-    cabangMap[key].count++;
-  });
-  var cabList = Object.values(cabangMap).sort(function(a,b){return b.outstanding-a.outstanding;}).slice(0,20);
-  var tbody = document.getElementById('biz-tbody');
-  if (tbody) {
-    tbody.innerHTML = cabList.map(function(c) {
-      var pct = c.target>0?c.outstanding/c.target*100:0;
-      var cls = D.pctClass(pct);
-      return '<tr><td><b>'+c.cabang+'</b></td><td>'+c.wilayah+'</td>'
-        +'<td class="num">'+D.fmtM(c.outstanding)+'</td>'
-        +'<td class="num">'+D.fmtM(c.target)+'</td>'
-        +'<td class="num"><span class="kpi-pct '+cls+'">'+D.fmtPct(pct)+'</span></td>'
-        +'<td class="num">'+c.count+'</td></tr>';
-    }).join('');
-  }
-
-  // ── Polis Baru vs Lapse per Bulan ────────────────────────────
-  var polisByMonth = {};
-  recs.forEach(function(r) {
-    if (!polisByMonth[r.bulan]) polisByMonth[r.bulan] = {baru:0, lapse:0};
-    if (r.status_kredit === 'Aktif') polisByMonth[r.bulan].baru++;
-    if (r.status_kredit === 'Lapse') polisByMonth[r.bulan].lapse++;
-  });
-  var polisMonths = Object.keys(polisByMonth).sort();
-  D.makeBarChart('chart-polis-trend', polisMonths, [
-    { label:'Polis Aktif Baru', data:polisMonths.map(function(m){return polisByMonth[m].baru;}),
-      backgroundColor:'rgba(5,150,105,.7)', borderRadius:4 },
-    { label:'Lapse', data:polisMonths.map(function(m){return polisByMonth[m].lapse;}),
-      backgroundColor:'rgba(220,38,38,.7)', borderRadius:4 }
+  D.makeBarChart('chart-ach-produk', prodList.map(function(p){return p.name;}), [
+    { label:'Achievement %',
+      data: prodList.map(function(p){return p.pct;}),
+      backgroundColor: prodList.map(function(p){return D.barColor(p.pct);}),
+      borderRadius:4 }
   ], {
     options: {
-      scales: {
-        x: { ticks:{font:{size:10,family:'Inter'},maxRotation:45}, grid:{display:false} },
-        y: { ticks:{font:{size:10,family:'Inter'}, callback:function(v){return v;}}, grid:{color:'#F1F5F9'} }
-      },
-      plugins: { tooltip:{ callbacks:{ label:function(ctx){ return ' '+ctx.dataset.label+': '+ctx.raw+' polis'; } } } }
+      scales: { y: { ticks: { callback: function(v){ return v.toFixed(0)+'%'; } } } },
+      plugins: { tooltip: { callbacks: { label: function(ctx){ return ' '+ctx.raw.toFixed(1)+'%'; } } } }
     }
   });
+
+  // ── Closing rate per wilayah ──────────────────
+  var wilMap = {};
+  recs.forEach(function(r){
+    if (!wilMap[r.rm]) wilMap[r.rm] = {total:0,closed:0};
+    wilMap[r.rm].total++;
+    if (r.status_kredit === 'Closing') wilMap[r.rm].closed++;
+  });
+  var wilList = Object.keys(wilMap).map(function(w){
+    var cr = wilMap[w].total > 0 ? wilMap[w].closed/wilMap[w].total*100 : 0;
+    return { name:w, rate:cr };
+  }).sort(function(a,b){return b.rate-a.rate;}).slice(0,8);
+
+  (function(){
+    var rdrCtx = document.getElementById('chart-closing-wil');
+    if (!rdrCtx) return;
+    if (window._closingRadar) window._closingRadar.destroy();
+    var rdrData = wilList.slice(0,8);
+    var maxRate = Math.max.apply(null, rdrData.map(function(w){return w.rate;}));
+    window._closingRadar = new Chart(rdrCtx, {
+      type:'radar',
+      data:{
+        labels: rdrData.map(function(w){return w.name;}),
+        datasets:[{
+          label:'Closing Rate %',
+          data: rdrData.map(function(w){return w.rate;}),
+          backgroundColor:'rgba(0,60,125,0.15)',
+          borderColor:'rgba(0,60,125,0.85)',
+          borderWidth:2,
+          pointBackgroundColor:'rgba(0,60,125,1)',
+          pointRadius:4, pointHoverRadius:6
+        }]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        scales:{ r:{
+          beginAtZero:true,
+          suggestedMax: Math.ceil((maxRate+5)/5)*5,
+          ticks:{ font:{size:9,family:'Inter'}, callback:function(v){return v.toFixed(0)+'%';}, stepSize:5 },
+          pointLabels:{ font:{size:10,family:'Inter'} },
+          grid:{ color:'#E2E8F0' }
+        }},
+        plugins:{
+          legend:{display:false},
+          tooltip:{ callbacks:{ label:function(ctx){ return ' '+ctx.raw.toFixed(1)+'%'; } } }
+        }
+      }
+    });
+  })();
+
+  // ── Total badge ───────────────────────────────
+  setVal('leads-total', D.fmtNum(recs.length));
+
+  var pipeStages = ['Call/Email/Visit','Presentasi Awal','Fact Finding','Aanwijzing','Pengajuan Quotation','Closing'];
+  var pipeColors = ['#94A3B8','#60A5FA','#8B5CF6','#F59E0B','#F97316','#10B981'];
+  var pipeCounts = pipeStages.map(function(st){ return recs.filter(function(r){return r.status_kredit===st;}).length; });
+  D.makeDonutChart('chart-status-donut', pipeStages, pipeCounts, pipeColors);
+  var el = document.getElementById('leads-status');
+  if (el) {
+    el.innerHTML = pipeStages.map(function(s,i) {
+      var pct = recs.length > 0 ? (pipeCounts[i]/recs.length*100).toFixed(0) : 0;
+      return '<div class="donut-legend-item">'
+        +'<span class="donut-legend-dot" style="background:'+pipeColors[i]+'"></span>'
+        +'<span style="flex:1">'+s+'</span><span style="font-weight:600">'+pipeCounts[i]+' ('+pct+'%)</span></div>';
+    }).join('');
+  }
+
+  // Wilayah distribution chart
+  var wMap = {};
+  recs.forEach(function(r) {
+    wMap[r.cabang] = (wMap[r.cabang]||0)+1;
+  });
+  var wNames = Object.keys(wMap).sort(function(a,b){return wMap[b]-wMap[a];}).slice(0,10);
+  D.makeBarChart('chart-wil-dist', wNames, [
+    { label:'Jumlah Rekening', data:wNames.map(function(w){return wMap[w];}),
+      backgroundColor:'rgba(0,60,125,.7)', borderRadius:4 }
+  ], {
+    options: {
+      scales: { y: { ticks: { callback: function(v){return v;} } } },
+      plugins: { tooltip: { callbacks: { label: function(ctx){ return ' '+ctx.raw+' rekening'; } } } }
+    }
+  });
+
+  renderTable();
+}
+
+function renderTable() {
+  var D = MIDash;
+  var top10 = allLeads
+    .filter(function(r){ return r.status_kredit === 'Closing'; })
+    .sort(function(a,b){ return b.outstanding_m - a.outstanding_m; })
+    .slice(0,10);
+
+  var tbody = document.getElementById('leads-tbody');
+  if (tbody) {
+    tbody.innerHTML = top10.map(function(r) {
+      return '<tr>'
+        +'<td><small style="color:var(--muted)">'+r.no_rekening+'</small></td>'
+        +'<td>'+r.cabang+'</td>'
+        +'<td>'+r.segmen+'</td>'
+        +'<td>'+r.produk+'</td>'
+        +'<td class="num">'+D.fmtM(r.outstanding_m)+'</td>'
+        +'<td><span class="badge-lancar">'+r.status_kredit+'</span></td>'
+        +'<td>'+r.rm+'</td>'
+      +'</tr>';
+    }).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px">Tidak ada data</td></tr>';
+  }
+}
+
+// ── Dashboard Kanal: Kanit-based filter ──────────────────────
+var _kanitSel = null;
+
+function initKanitFilter() {
+  var sel = document.getElementById('wilayah-filter');
+  if (!sel) return;
+  var kanitSet = {};
+  MI_DATA.records.forEach(function(r){ kanitSet[r.cabang] = true; });
+  var kanits = Object.keys(kanitSet).sort();
+  sel.innerHTML = '<option value="">Semua Kanit</option>'
+    + kanits.map(function(k){ return '<option value="'+k+'">'+k+'</option>'; }).join('');
+}
+
+function getKanitRecs() {
+  return _kanitSel
+    ? MI_DATA.records.filter(function(r){ return r.cabang === _kanitSel; })
+    : MI_DATA.records;
+}
+
+// Override global applyFilter / resetFilter from dashboard.js
+function applyFilter() {
+  var sel = document.getElementById('wilayah-filter');
+  _kanitSel = sel ? (sel.value || null) : null;
+  var el = document.getElementById('filter-info');
+  if (el) {
+    if (_kanitSel) { el.textContent='Menampilkan: Kanit '+_kanitSel; el.style.color='#003C7D'; el.style.fontWeight='600'; }
+    else { el.textContent='Menampilkan semua kanit'; el.style.color=''; el.style.fontWeight=''; }
+  }
+  renderDashKanal();
+}
+function resetFilter() {
+  var sel = document.getElementById('wilayah-filter');
+  if (sel) sel.value = '';
+  _kanitSel = null;
+  var el = document.getElementById('filter-info');
+  if (el){ el.textContent='Menampilkan semua kanit'; el.style.color=''; el.style.fontWeight=''; }
+  renderDashKanal();
 }
 
 window.addEventListener('load', function() {
-  MIDash.initFilter();
-  renderBusiness();
+  initKanitFilter();
+  renderDashKanal();
 });
 
 </script>

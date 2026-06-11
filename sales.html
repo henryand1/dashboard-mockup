@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sales Performance – MI Consumer Dashboard</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23003C7D'/><text x='16' y='22' text-anchor='middle' font-size='13' font-family='Arial,sans-serif' fill='white' font-weight='bold'>MI</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -103,7 +104,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .kpi-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
 .kpi-icon{
   width:44px;height:44px;border-radius:10px;display:flex;
-  align-items:center;justify-content:center;flex-shrink:0;font-size:20px;
+  align-items:center;justify-content:center;flex-shrink:0;
 }
 .kpi-icon.navy{background:var(--blue-light);color:var(--navy)}
 .kpi-icon.orange{background:#FFF0E8;color:var(--orange)}
@@ -237,7 +238,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   <div class="bni-logo-text">MI<span>.</span></div>
   <div class="bni-brand-sep"></div>
   <div class="bni-brand-label">Consumer Dashboard</div>
-  <div class="bni-nav-links"><a href="sales.html" class="bni-nav-link active">Sales</a><a href="business.html" class="bni-nav-link">Business</a><a href="leads.html" class="bni-nav-link">Leads</a></div>
+  <div class="bni-nav-links"><a href="sales.html" class="bni-nav-link active">Sales</a><a href="business.html" class="bni-nav-link">Dashboard Kanal</a><a href="leads.html" class="bni-nav-link">Leads &amp; Pipeline</a></div>
 </nav>
 <div class="bni-filter-bar">
   <span class="filter-label">Kanal:</span>
@@ -251,33 +252,33 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   <!-- KPI Row -->
   <div class="kpi-row" style="margin-bottom:20px">
     <div class="kpi-card">
-      <div class="kpi-icon navy">👥</div>
+      <div class="kpi-icon navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
       <div class="kpi-body">
-        <div class="kpi-label">Total Tertanggung</div>
+        <div class="kpi-label">Total Premi</div>
         <div class="kpi-value" id="kpi-nasabah">–</div>
-        <div class="kpi-sub">Data tertanggung aktif</div>
+        <div class="kpi-sub">Nilai premi akuisisi</div>
       </div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-icon green">🙋</div>
+      <div class="kpi-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="7"/><line x1="12" y1="17" x2="12" y2="22"/><line x1="2" y1="12" x2="7" y2="12"/><line x1="17" y1="12" x2="22" y2="12"/></svg></div>
       <div class="kpi-body">
-        <div class="kpi-label">Total Agen</div>
+        <div class="kpi-label">Amount Target</div>
         <div class="kpi-value" id="kpi-rm">–</div>
-        <div class="kpi-sub">Agen Pemasaran</div>
+        <div class="kpi-sub">Target premi seluruh kanal</div>
       </div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-icon orange">📈</div>
+      <div class="kpi-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
       <div class="kpi-body">
-        <div class="kpi-label">Avg Achievement Premi</div>
+        <div class="kpi-label">Amount Achievement</div>
         <div class="kpi-value kpi-pct" id="kpi-dpk-ach">–</div>
-        <div class="kpi-sub">Rata-rata semua kanal</div>
+        <div class="kpi-sub">Overall achievement premi</div>
       </div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-icon purple">📊</div>
+      <div class="kpi-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
       <div class="kpi-body">
-        <div class="kpi-label">Avg Achievement Klaim</div>
+        <div class="kpi-label">Avg Achievement per Kanal</div>
         <div class="kpi-value kpi-pct" id="kpi-lend-ach">–</div>
         <div class="kpi-sub">Rata-rata semua kanal</div>
       </div>
@@ -297,10 +298,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     </div>
     <div class="bni-card">
       <div class="bni-card-header">
-        <span class="bni-card-title">Nilai Pertanggungan per Segmen</span>
+        <span class="bni-card-title">Sales Activity</span>
       </div>
       <div class="bni-card-body">
-        <div class="donut-wrap" style="padding:10px 0"><div style="position:relative;width:150px;height:150px;flex-shrink:0"><canvas id="chart-segment"></canvas></div><div class="donut-legend" id="legend-segment"></div></div>
+        <div class="chart-wrap" style="height:240px"><canvas id="chart-segment"></canvas></div>
       </div>
     </div>
   </div>
@@ -315,30 +316,17 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
       <table class="bni-table">
         <thead><tr>
           <th>Kanal</th>
-          <th class="num">Premi Akuisisi</th>
-          <th class="num">Target Premi</th>
+          <th class="num">Target</th>
           <th class="num">Achievement</th>
-          <th class="num">Klaim</th>
-          <th class="num">Ach. Klaim</th>
-          <th class="num">Tertanggung</th>
-          <th class="num">Agen</th>
+          <th class="num">Presentase</th>
+          <th class="num">Jumlah Polis</th>
+          <th class="num">Jumlah Agen</th>
         </tr></thead>
         <tbody id="sales-tbody"></tbody>
       </table>
     </div>
   </div>
 
-  <!-- Loss Ratio -->
-  <div class="section-title">Loss Ratio per Kanal</div>
-  <div class="bni-card" style="margin-bottom:20px">
-    <div class="bni-card-header">
-      <span class="bni-card-title">Loss Ratio Klaim ÷ Premi (%)</span>
-      <span class="bni-card-badge" id="loss-ratio-avg" style="font-size:13px">–</span>
-    </div>
-    <div class="bni-card-body">
-      <div class="chart-wrap" style="height:260px"><canvas id="chart-loss-ratio"></canvas></div>
-    </div>
-  </div>
 
 </main>
 
@@ -354,24 +342,28 @@ function renderSales() {
   var ws = D.getWilayahSeries();
 
   // KPI cards
-  var totalNasabah = ws.reduce(function(a,b){return a+b.nasabah;},0);
-  var totalRM = ws.reduce(function(a,b){return a+b.rm;},0);
-  var avgDpkPct = ws.length > 0 ? ws.reduce(function(a,b){return a+b.dpk_pct;},0)/ws.length : 0;
-  var avgLendPct = ws.length > 0 ? ws.reduce(function(a,b){return a+b.lending_pct;},0)/ws.length : 0;
+  var totalDpk    = ws.reduce(function(a,b){return a+b.dpk;},0);
+  var totalDpkTgt = ws.reduce(function(a,b){return a+b.dpk_target;},0);
+  var overallPct  = totalDpkTgt > 0 ? totalDpk/totalDpkTgt*100 : 0;
+  // avgKanalPct selalu dari semua kanal (tidak ter-filter)
+  var allWs = MI_DATA.summaryWilayah;
+  var avgKanalPct = allWs.length > 0
+    ? allWs.reduce(function(a,b){ return a + (b.dpk_target > 0 ? b.dpk_outstanding/b.dpk_target*100 : 0); }, 0) / allWs.length
+    : 0;
 
   function setVal(id,v) { var el=document.getElementById(id); if(el) el.textContent=v; }
-  setVal('kpi-nasabah', D.fmtNum(totalNasabah));
-  setVal('kpi-rm', D.fmtNum(totalRM));
-  setVal('kpi-dpk-ach', D.fmtPct(avgDpkPct));
-  setVal('kpi-lend-ach', D.fmtPct(avgLendPct));
+  setVal('kpi-nasabah', D.fmtM(totalDpk));
+  setVal('kpi-rm',      D.fmtM(totalDpkTgt));
+  setVal('kpi-dpk-ach', D.fmtPct(overallPct));
+  setVal('kpi-lend-ach',D.fmtPct(avgKanalPct));
 
   // Color KPI achievement
   function colorEl(id, pct) {
     var el = document.getElementById(id);
     if (el) el.className = el.className.replace(/\bkpi-pct-\S+/,'') + ' kpi-pct ' + D.pctClass(pct);
   }
-  colorEl('kpi-dpk-ach', avgDpkPct);
-  colorEl('kpi-lend-ach', avgLendPct);
+  colorEl('kpi-dpk-ach', overallPct);
+  colorEl('kpi-lend-ach', avgKanalPct);
 
   // Achievement chart
   var sorted = ws.slice().sort(function(a,b){return b.dpk_pct-a.dpk_pct;});
@@ -389,21 +381,22 @@ function renderSales() {
     }
   });
 
-  // Wilayah table
+  // Performa Kanal table
+  var allRecs = D.getRecords();
+  var polisPerKanal = {};
+  allRecs.forEach(function(r){ polisPerKanal[r.wilayah_nama]=(polisPerKanal[r.wilayah_nama]||0)+1; });
   var tbody = document.getElementById('sales-tbody');
   if (tbody) {
     var ranked = ws.slice().sort(function(a,b){return b.dpk_pct-a.dpk_pct;});
     tbody.innerHTML = ranked.map(function(w,i) {
       var cls = D.pctClass(w.dpk_pct);
-      var badge = i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+      var badge = i===0?'<b style="color:#F59E0B">#1</b>':i===1?'<b style="color:#94A3B8">#2</b>':i===2?'<b style="color:#CD7F32">#3</b>':'<b style="color:var(--muted)">'+(i+1)+'.</b>';
       return '<tr>'
         +'<td>'+badge+' <b>'+w.nama+'</b></td>'
-        +'<td class="num">'+D.fmtM(w.dpk)+'</td>'
         +'<td class="num">'+D.fmtM(w.dpk_target)+'</td>'
+        +'<td class="num">'+D.fmtM(w.dpk)+'</td>'
         +'<td class="num"><span class="kpi-pct '+cls+'">'+D.fmtPct(w.dpk_pct)+'</span></td>'
-        +'<td class="num">'+D.fmtM(w.lending)+'</td>'
-        +'<td class="num"><span class="kpi-pct '+D.pctClass(w.lending_pct)+'">'+D.fmtPct(w.lending_pct)+'</span></td>'
-        +'<td class="num">'+w.nasabah+'</td>'
+        +'<td class="num">'+(polisPerKanal[w.nama]||0)+'</td>'
         +'<td class="num">'+w.rm+'</td>'
       +'</tr>';
     }).join('');
@@ -418,42 +411,27 @@ function renderSales() {
     segments[r.segmen].target += r.target_m;
     segments[r.segmen].count++;
   });
-  var segNames = Object.keys(segments);
-  var segColors = ['rgba(0,60,125,.85)','rgba(243,112,33,.85)','rgba(5,150,105,.85)','rgba(124,58,237,.85)'];
-  D.makeDonutChart('chart-segment', segNames, segNames.map(function(s){return segments[s].outstanding;}), segColors);
-  var legSeg = document.getElementById('legend-segment');
-  if (legSeg) {
-    legSeg.innerHTML = segNames.map(function(s,i){
-      return '<div class="donut-legend-item"><span class="donut-legend-dot" style="background:'+segColors[i]+'"></span>'
-        +'<span>'+s+'</span><span style="margin-left:auto;font-weight:600">'+D.fmtM(segments[s].outstanding)+'</span></div>';
-    }).join('');
+  // Sales Activity – pipeline stage distribution
+  var actStages = ['Call/Email/Visit','Presentasi Awal','Fact Finding','Aanwijzing','Pengajuan Quotation','Closing'];
+  var actColors = ['rgba(100,116,139,.75)','rgba(59,130,246,.75)','rgba(124,58,237,.75)','rgba(217,119,6,.75)','rgba(243,112,33,.75)','rgba(5,150,105,.75)'];
+  var actCounts = actStages.map(function(st){ return recs.filter(function(r){return r.status_kredit===st;}).length; });
+  if (MIDash.state.pageCharts['chart-segment']) { MIDash.state.pageCharts['chart-segment'].destroy(); delete MIDash.state.pageCharts['chart-segment']; }
+  var actCtx = document.getElementById('chart-segment');
+  if (actCtx) {
+    MIDash.state.pageCharts['chart-segment'] = new Chart(actCtx, {
+      type:'bar',
+      data:{ labels:actStages, datasets:[{ label:'Jumlah Leads', data:actCounts, backgroundColor:actColors, borderRadius:4 }] },
+      options:{
+        indexAxis:'y', responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:function(ctx){ return ' '+ctx.raw+' leads'; } } } },
+        scales:{
+          x:{ ticks:{font:{size:10,family:'Inter'}}, grid:{color:'#F1F5F9'} },
+          y:{ ticks:{font:{size:10,family:'Inter'}}, grid:{display:false} }
+        }
+      }
+    });
   }
 
-  // ── Loss Ratio per Kanal ──────────────────────────────────────
-  var lrSorted = ws.slice().sort(function(a,b){return b.dpk-a.dpk;});
-  var lrRatios = lrSorted.map(function(w){ return w.dpk > 0 ? w.lending/w.dpk*100 : 0; });
-  var avgLR = lrRatios.length > 0 ? lrRatios.reduce(function(a,b){return a+b;},0)/lrRatios.length : 0;
-  var lrBadge = document.getElementById('loss-ratio-avg');
-  if (lrBadge) {
-    lrBadge.textContent = D.fmtPct(avgLR);
-    lrBadge.style.background = avgLR > 100 ? '#FEF2F2' : '#ECFDF5';
-    lrBadge.style.color = avgLR > 100 ? '#DC2626' : '#059669';
-  }
-  D.makeBarChart('chart-loss-ratio', lrSorted.map(function(w){return w.nama;}), [
-    { label:'Loss Ratio (%)',
-      data: lrRatios,
-      backgroundColor: lrRatios.map(function(r){ return r>100?'rgba(220,38,38,.7)':r>80?'rgba(217,119,6,.7)':'rgba(5,150,105,.7)'; }),
-      borderRadius:4 },
-    { label:'Batas Aman (100%)',
-      data: lrSorted.map(function(){ return 100; }),
-      type:'line', borderColor:'rgba(220,38,38,.65)', borderWidth:2,
-      borderDash:[6,4], pointRadius:0, fill:false, backgroundColor:'transparent' }
-  ], {
-    options: {
-      scales: { y: { ticks:{ font:{size:10,family:'Inter'}, callback:function(v){return v.toFixed(0)+'%';} }, grid:{color:'#F1F5F9'} } },
-      plugins: { tooltip:{ callbacks:{ label:function(ctx){ return ' '+ctx.dataset.label+': '+ctx.raw.toFixed(1)+'%'; } } } }
-    }
-  });
 }
 
 window.addEventListener('load', function() {
