@@ -238,7 +238,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   <div class="bni-logo-text">MI<span>.</span></div>
   <div class="bni-brand-sep"></div>
   <div class="bni-brand-label">Consumer Dashboard</div>
-  <div class="bni-nav-links"><a href="sales.html" class="bni-nav-link">Sales</a><a href="business.html" class="bni-nav-link active">Dashboard Kanal</a><a href="leads.html" class="bni-nav-link">Leads &amp; Pipeline</a></div>
+  <div class="bni-nav-links"><a href="sales.html" class="bni-nav-link">Sales</a><a href="leads.html" class="bni-nav-link">Leads &amp; Pipeline</a><a href="business.html" class="bni-nav-link active">Dashboard Kanal</a></div>
 </nav>
 <div class="bni-filter-bar">
   <span class="filter-label">Kanit:</span>
@@ -322,7 +322,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     </div>
     <div class="bni-card">
       <div class="bni-card-header">
-        <span class="bni-card-title">Distribusi Status Polis</span>
+        <span class="bni-card-title">Pipeline by Status</span>
       </div>
       <div class="bni-card-body"><div class="donut-wrap"><div style="position:relative;width:150px;height:150px;flex-shrink:0"><canvas id="chart-status-donut"></canvas></div><div class="donut-legend" id="leads-status"></div></div></div>
     </div>
@@ -398,24 +398,21 @@ function renderDashKanal() {
   var catOut = categories.map(function(c){ return recs.filter(function(r){return r.segmen===c;}).reduce(function(a,b){return a+b.outstanding_m;},0); });
   var catTgt = categories.map(function(c){ return recs.filter(function(r){return r.segmen===c;}).reduce(function(a,b){return a+b.target_m;},0); });
   D.makeBarChart('chart-funnel', categories, [
-    { label:'Nilai Pertanggungan', data:catOut, backgroundColor:catColors, borderRadius:4 },
-    { label:'Target', data:catTgt,
-      type:'line', borderColor:'rgba(220,38,38,.8)', borderWidth:2.5,
-      pointRadius:8, pointBackgroundColor:'rgba(220,38,38,1)', fill:false,
-      backgroundColor:'transparent', tension:0.3 }
+    { label:'Nilai Pertanggungan', data:catOut, backgroundColor:catColors, borderRadius:4 }
   ]);
 
-  // ── Achievement rate per produk (top 8) ───────
+  // ── Achievement rate per produk ───────────────
+  var fixedProduks = ['Indemnity','Medical Care','GTL','Personal Accident','Endowment'];
   var prodMap = {};
   recs.forEach(function(r){
     if (!prodMap[r.produk]) prodMap[r.produk] = {out:0,tgt:0};
     prodMap[r.produk].out += r.outstanding_m;
     prodMap[r.produk].tgt += r.target_m;
   });
-  var prodList = Object.keys(prodMap).map(function(p){
-    var pct = prodMap[p].tgt > 0 ? prodMap[p].out/prodMap[p].tgt*100 : 0;
-    return { name:p, pct:pct };
-  }).sort(function(a,b){return b.pct-a.pct;}).slice(0,8);
+  var prodList = fixedProduks.map(function(p){
+    var d = prodMap[p] || {out:0,tgt:0};
+    return { name:p, pct: d.tgt > 0 ? d.out/d.tgt*100 : 0 };
+  });
 
   D.makeBarChart('chart-ach-produk', prodList.map(function(p){return p.name;}), [
     { label:'Achievement %',
@@ -424,7 +421,10 @@ function renderDashKanal() {
       borderRadius:4 }
   ], {
     options: {
-      scales: { y: { ticks: { callback: function(v){ return v.toFixed(0)+'%'; } } } },
+      scales: {
+        x: { ticks: { maxRotation:0, minRotation:0, font:{size:10,family:'Inter'}, callback:function(val,i,ticks){ var lbl=this.getLabelForValue(val); return lbl.includes(' ') ? lbl.split(' ') : lbl; } }, grid:{display:false} },
+        y: { ticks: { callback: function(v){ return v.toFixed(0)+'%'; } } }
+      },
       plugins: { tooltip: { callbacks: { label: function(ctx){ return ' '+ctx.raw.toFixed(1)+'%'; } } } }
     }
   });

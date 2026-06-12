@@ -238,7 +238,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   <div class="bni-logo-text">MI<span>.</span></div>
   <div class="bni-brand-sep"></div>
   <div class="bni-brand-label">Consumer Dashboard</div>
-  <div class="bni-nav-links"><a href="sales.html" class="bni-nav-link active">Sales</a><a href="business.html" class="bni-nav-link">Dashboard Kanal</a><a href="leads.html" class="bni-nav-link">Leads &amp; Pipeline</a></div>
+  <div class="bni-nav-links"><a href="sales.html" class="bni-nav-link active">Sales</a><a href="leads.html" class="bni-nav-link">Leads &amp; Pipeline</a><a href="business.html" class="bni-nav-link">Dashboard Kanal</a></div>
 </nav>
 <div class="bni-filter-bar">
   <span class="filter-label">Kanal:</span>
@@ -271,8 +271,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
       <div class="kpi-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
       <div class="kpi-body">
         <div class="kpi-label">Amount Achievement</div>
-        <div class="kpi-value kpi-pct" id="kpi-dpk-ach">–</div>
-        <div class="kpi-sub">Overall achievement premi</div>
+        <div class="kpi-value" id="kpi-dpk-ach">–</div>
+        <div class="kpi-sub" id="kpi-dpk-ach-sub">Overall achievement premi</div>
       </div>
     </div>
     <div class="kpi-card">
@@ -310,7 +310,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   <div class="section-title">Ranking Kanal</div>
   <div class="bni-card" style="margin-bottom:20px">
     <div class="bni-card-header">
-      <span class="bni-card-title">Performa Kanal – Premi &amp; Klaim</span>
+      <span class="bni-card-title">Performa Kanal</span>
     </div>
     <div class="bni-card-body" style="overflow-x:auto;padding:0">
       <table class="bni-table">
@@ -354,15 +354,17 @@ function renderSales() {
   function setVal(id,v) { var el=document.getElementById(id); if(el) el.textContent=v; }
   setVal('kpi-nasabah', D.fmtM(totalDpk));
   setVal('kpi-rm',      D.fmtM(totalDpkTgt));
-  setVal('kpi-dpk-ach', D.fmtPct(overallPct));
+  setVal('kpi-dpk-ach', D.fmtM(totalDpk));
   setVal('kpi-lend-ach',D.fmtPct(avgKanalPct));
+  var subEl = document.getElementById('kpi-dpk-ach-sub');
+  if (subEl) subEl.textContent = D.fmtPct(overallPct) + ' dari target';
 
   // Color KPI achievement
   function colorEl(id, pct) {
     var el = document.getElementById(id);
     if (el) el.className = el.className.replace(/\bkpi-pct-\S+/,'') + ' kpi-pct ' + D.pctClass(pct);
   }
-  colorEl('kpi-dpk-ach', overallPct);
+  // kpi-dpk-ach shows amount, no color coding needed
   colorEl('kpi-lend-ach', avgKanalPct);
 
   // Achievement chart
